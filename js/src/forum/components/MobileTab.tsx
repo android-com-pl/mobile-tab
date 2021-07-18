@@ -35,6 +35,7 @@ export default class MobileTab extends Component {
 
     if (app.session.user) {
       const unread = app.session.user.unreadNotificationCount();
+      // The default Flarum component opens as a dropdown on mobile if the drawer is not open
       items.add(
         'notifications',
         <LinkButton

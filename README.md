@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) ![Supports latest Flarum](https://flarum-badge-api.davwheat.dev/v1/compat-latest/acpl/mobile-tab)
 
-A [Flarum](https://flarum.org) extension. 
+A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 
 ### Installation
 

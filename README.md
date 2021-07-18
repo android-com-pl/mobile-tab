@@ -1,4 +1,4 @@
-# Mobiel tab
+# Mobile tab
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) ![Supports latest Flarum](https://flarum-badge-api.davwheat.dev/v1/compat-latest/acpl/mobile-tab)
 
@@ -33,7 +33,11 @@ const { MobileTab, MobileTabItem } = components;
 export default () => {
   extend(MobileTab.prototype, 'items', (items) => {
     // Add new item
-    items.add('following', <MobileTabItem href={app.route('following')} icon="fas fa-star" />, 90);
+    items.add(
+      'following',
+      <MobileTabItem href={app.route('following')} icon="fas fa-star" label={app.translator.trans('my-ext.forum.my-item')} />,
+      90
+    );
 
     // Add new item using custom HTML
     items.add('my-item', <div>...This is my custom item</div>, 70);
@@ -42,6 +46,7 @@ export default () => {
     items.remove('home');
   });
 };
+
 
 ```
 

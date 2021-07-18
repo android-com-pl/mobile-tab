@@ -5,6 +5,10 @@
   ],
   "type": "flarum-extension",
   "license": "MIT",
+  "support": {
+    "issues": "https://github.com/android-com-pl/mobile-tab/issues",
+    "source": "https://github.com/android-com-pl/mobile-tab"
+  },
   "require": {
     "flarum/core": "^1.0"
   },

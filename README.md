@@ -4,6 +4,8 @@
 
 A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 
+![Imgur](https://i.imgur.com/cRnwEhZ.png)
+
 ### Installation
 
 Install with composer:
@@ -54,4 +56,4 @@ export default () => {
 
 - [Packagist](https://packagist.org/packages/acpl/mobile-tab)
 - [GitHub](https://github.com/android-com-pl/mobile-tab)
-- [Discuss](https://discuss.flarum.org/d/PUT_DISCUSS_SLUG_HERE)
+- [Discuss](https://discuss.flarum.org/d/28216-mobile-tab)

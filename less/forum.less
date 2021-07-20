@@ -19,7 +19,7 @@
     height: 100%;
 
     margin: 0 auto;
-    padding: 10px 10px 5px 10px;
+    padding: 0;
     text-align: center;
 
     li {
@@ -28,8 +28,15 @@
       margin: 0 3px;
     }
 
-    a {
+    a,
+    > li > .Button,
+    > li > .Dropdown {
       color: @secondary-color;
+      display: block;
+      width: 100%;
+      -webkit-tap-highlight-color: fade(@control-bg, 30%);
+      padding: 10px 10px 5px 10px;
+      text-align: center;
     }
 
     > li > a {
@@ -46,6 +53,7 @@
       margin: 0;
       color: @secondary-color;
       background: transparent;
+
       &-icon {
         margin-right: 0;
         margin-bottom: 6px;
@@ -57,6 +65,22 @@
         font-size: 9px;
         line-height: 1em;
         margin: 0 !important;
+      }
+    }
+
+    > li > .ButtonGroup.Dropdown {
+      padding: 0;
+    }
+
+    > li > .ButtonGroup.Dropdown > .Button {
+      float: none;
+      width: 100%;
+      padding: 10px 10px 5px 10px;
+
+      &:focus,
+      &:active {
+        background: transparent;
+        box-shadow: none;
       }
     }
 

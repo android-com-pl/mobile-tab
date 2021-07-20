@@ -27,7 +27,7 @@ Read: https://docs.flarum.org/extend/extending-extensions.html#extending-extensi
 
 Examples:
 ```js
-import { components } from '@acpl/mobile-tab';
+import { components } from '@acpl-mobile-tab';
 import { extend } from 'flarum/common/extend';
 
 const { MobileTab, MobileTabItem } = components;

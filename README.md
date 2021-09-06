@@ -4,7 +4,7 @@
 
 A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 
-![Imgur](https://i.imgur.com/cRnwEhZ.png)
+![Imgur](https://i.imgur.com/QGrWQyP.png)
 
 ### Installation
 
@@ -22,7 +22,7 @@ php flarum cache:clear
 ```
 
 ### Extending
-You can add, modify and delete items.
+You can add, modify and delete items with your own extension.
 Read: https://docs.flarum.org/extend/extending-extensions.html#extending-extensions
 
 Examples:

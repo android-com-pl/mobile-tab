@@ -1,3 +1,4 @@
+import app from 'flarum/forum/app';
 import SessionDropdown from 'flarum/forum/components/SessionDropdown';
 import avatar from 'flarum/common/helpers/avatar';
 

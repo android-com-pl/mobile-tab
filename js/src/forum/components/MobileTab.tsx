@@ -20,8 +20,8 @@ export default class MobileTab extends Component {
     );
   }
 
-  items(): ItemList {
-    const items = new ItemList();
+  items(): ItemList<Children> {
+    const items = new ItemList<Children>();
 
     items.add('home', <MobileTabItem route="/" icon="fas fa-home" label={app.translator.trans('acpl-mobile-tab.forum.home')} />, 100);
 

@@ -56,7 +56,8 @@
                 "bundlewatch": false,
                 "backendTesting": false,
                 "editorConfig": true,
-                "styleci": true
+                "styleci": true,
+                "css": true
             }
         }
     }

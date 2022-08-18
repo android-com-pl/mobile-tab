@@ -23,7 +23,7 @@ php flarum cache:clear
 
 ### Extending
 You can add, modify and delete items with your own extension.
-Read: https://docs.flarum.org/extend/extending-extensions.html#extending-extensions
+Read: [https://docs.flarum.org/extend/extending-extensions/](https://docs.flarum.org/extend/extending-extensions/)
 
 Examples:
 ```js

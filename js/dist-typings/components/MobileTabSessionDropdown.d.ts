@@ -2,4 +2,4 @@ export default class MobileTabSessionDropdown extends SessionDropdown<import("fl
     constructor();
     getButtonContent(vnode: any): any[];
 }
-import SessionDropdown from "flarum/forum/components/SessionDropdown";
+import SessionDropdown from 'flarum/forum/components/SessionDropdown';

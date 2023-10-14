@@ -1,3 +1,4 @@
 acpl-mobile-tab:
   forum:
     home: 'Home'
+    all_discussions: 'Discussions'

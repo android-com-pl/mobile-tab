@@ -25,7 +25,14 @@ export default class MobileTab extends Component {
 
     items.add('home', <MobileTabItem route="/" icon="fas fa-home" label={app.translator.trans('acpl-mobile-tab.forum.home')} />, 100);
 
-    if ('askvortsov-categories' in flarum.extensions) {
+
+    if (app.routes.index.path === '/all') {
+      items.add(
+        'all',
+        <MobileTabItem route={app.route('index')} icon="fas fa-comments" label={app.translator.trans('acpl-mobile-tab.forum.all_discussions')} />,
+        90
+      );
+    } else if ('askvortsov-categories' in flarum.extensions) {
       items.add(
         'categories',
         <MobileTabItem route={app.route('categories')} icon="fas fa-th-list" label={app.translator.trans('askvortsov-categories.forum.index.categories_link')} />,

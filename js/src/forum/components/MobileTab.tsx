@@ -29,7 +29,7 @@ export default class MobileTab extends Component {
     if (app.routes.index.path === '/all') {
       items.add(
         'all',
-        <MobileTabItem route={app.route('index')} icon="fas fa-comments" label={app.translator.getLocale() === 'en' ? 'Discussions' : app.translator.trans('core.forum.index.all_discussions_link')} />,
+        <MobileTabItem route={app.route('index')} icon="fas fa-comments" label={app.translator.trans('acpl-mobile-tab.forum.all_discussions')} />,
         90
       );
     } else if ('askvortsov-categories' in flarum.extensions) {

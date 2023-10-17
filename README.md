@@ -22,34 +22,56 @@ php flarum cache:clear
 ```
 
 ### Extending
+
 You can add, modify and delete items with your own extension.
 Read: [https://docs.flarum.org/extend/extending-extensions/](https://docs.flarum.org/extend/extending-extensions/)
 
 Examples:
+
 ```js
-import { components } from '@acpl-mobile-tab';
-import { extend } from 'flarum/common/extend';
+import { components } from "@acpl-mobile-tab";
+import { extend } from "flarum/common/extend";
 
 const { MobileTab, MobileTabItem } = components;
 
 export default () => {
-  extend(MobileTab.prototype, 'items', (items) => {
+  extend(MobileTab.prototype, "items", (items) => {
     // Add new item
     items.add(
-      'following',
-      <MobileTabItem href={app.route('following')} icon="fas fa-star" label={app.translator.trans('my-ext.forum.my-item')} />,
-      90
+      "following",
+      <MobileTabItem
+        href={app.route("following")}
+        icon="fas fa-star"
+        label={app.translator.trans("my-ext.forum.my-item")}
+      />,
+      90,
     );
 
     // Add new item using custom HTML
-    items.add('my-item', <div>...This is my custom item</div>, 70);
+    items.add("my-item", <div>...This is my custom item</div>, 70);
 
     // Remove item
-    items.remove('home');
+    items.remove("home");
   });
 };
+```
 
+If you are using TypeScript, add a path to your [tsconfig.json](https://github.com/flarum/flarum-tsconfig/blob/main/README.md) to enable type hints in your code editor:
 
+```json
+{
+  "extends": "flarum-tsconfig",
+  // ...
+  "compilerOptions": {
+    // ....
+    "paths": {
+      // ...
+      "@acpl-mobile-tab": [
+        "./vendor/acpl/mobile-tab/js/dist-typings/index.d.ts"
+      ]
+    }
+  }
+}
 ```
 
 ### Links

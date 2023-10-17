@@ -1,3 +1,11 @@
+:root {
+  --mobile-tab-height: 54px;
+  --mobile-tab-bg: var(--body-bg);
+  --mobile-tab-zindex: var(--zindex-header);
+  --mobile-tab-shadow: 0 2px 6px var(--shadow-color);
+  --mobile-tab-item-color: var(--header-control-color);
+}
+
 .MobileTab {
   @media @tablet-up {
     display: none;
@@ -7,9 +15,11 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: @body-bg;
-  box-shadow: 0 2px 6px @shadow-color;
-  z-index: @zindex-header;
+  height: var(--mobile-tab-height);
+  background: var(--mobile-tab-bg);
+  box-shadow: var(--mobile-tab-shadow);
+  z-index: var(--mobile-tab-zindex);
+  isolation: isolate;
 
   &-items {
     display: flex;
@@ -24,18 +34,17 @@
 
     li {
       flex-basis: 100%;
-      min-width: 54px;
-      margin: 0 3px;
     }
 
     a,
     > li > .Button,
     > li > .Dropdown {
-      color: @header-control-color;
+      color: var(--mobile-tab-item-color);
       display: block;
       width: 100%;
       -webkit-tap-highlight-color: fade(@control-bg, 60%);
-      padding: 10px 10px 5px 10px;
+      padding-top: 5px;
+      height: 100%;
       text-align: center;
     }
 
@@ -51,7 +60,7 @@
     > li > .Dropdown > .Button > .Button {
       padding: 0;
       margin: 0;
-      color: @header-control-color;
+      color: var(--mobile-tab-item-color);
       background: transparent;
 
       &-icon {
@@ -64,7 +73,7 @@
         display: block;
         font-size: 9px;
         line-height: 1em;
-        margin: 0 !important;
+        margin: 0;
       }
     }
 
@@ -75,17 +84,12 @@
     > li > .ButtonGroup.Dropdown > .Button {
       float: none;
       width: 100%;
-      padding: 10px 10px 5px 10px;
 
       &:focus,
       &:active {
         background: transparent;
         box-shadow: none;
       }
-    }
-
-    .item-logIn {
-      color: @header-control-color;
     }
 
     .item-session {
@@ -101,13 +105,13 @@
 
     .SessionDropdown {
       .Avatar {
-        margin: 0 0 4px;
-        border: 1px solid @control-bg;
+        margin: 0 0 6px;
+        border: 1px solid var(--control-bg);
       }
     }
 
-    a[active='true'] {
-      color: @primary-color;
+    a[active="true"] {
+      color: var(--primary-color);
     }
 
     .item-notifications .Button-label {
@@ -116,7 +120,7 @@
 
     .NotificationsDropdown-unread {
       top: -28px;
-      left: 50% !important;
+      left: 50%;
     }
   }
 }

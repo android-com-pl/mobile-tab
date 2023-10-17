@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Acpl\MobileTab;
+namespace ACPL\MobileTab;
 
 use Flarum\Extend;
 

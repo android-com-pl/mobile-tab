@@ -1,5 +1,6 @@
-import Component, { ComponentAttrs } from 'flarum/common/Component';
-import { Children, Vnode } from 'mithril';
+import type { Children, Vnode } from 'mithril';
+import type { ComponentAttrs } from 'flarum/common/Component';
+import Component from 'flarum/common/Component';
 interface MobileTabItemAttrs extends ComponentAttrs {
     route: string;
     icon: string;

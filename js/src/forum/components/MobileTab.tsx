@@ -1,14 +1,16 @@
+// External dependencies
+import type { Children, Vnode } from 'mithril';
 import app from 'flarum/forum/app';
+import type { ComponentAttrs } from 'flarum/common/Component';
 import Component from 'flarum/common/Component';
-import { ComponentAttrs } from 'flarum/common/Component';
-import { Vnode, Children } from 'mithril';
 import listItems from 'flarum/common/helpers/listItems';
 import ItemList from 'flarum/common/utils/ItemList';
-import MobileTabItem from './MobileTabItem';
 import LinkButton from 'flarum/common/components/LinkButton';
 import Button from 'flarum/common/components/Button';
 import LogInModal from 'flarum/forum/components/LogInModal';
 
+// Internal dependencies
+import MobileTabItem from './MobileTabItem';
 import MobileTabSessionDropdown from './MobileTabSessionDropdown';
 
 export default class MobileTab extends Component {
@@ -25,7 +27,6 @@ export default class MobileTab extends Component {
 
     items.add('home', <MobileTabItem route="/" icon="fas fa-home" label={app.translator.trans('acpl-mobile-tab.forum.home')} />, 100);
 
-
     if (app.routes.index.path === '/all') {
       items.add(
         'all',
@@ -35,7 +36,11 @@ export default class MobileTab extends Component {
     } else if ('askvortsov-categories' in flarum.extensions) {
       items.add(
         'categories',
-        <MobileTabItem route={app.route('categories')} icon="fas fa-th-list" label={app.translator.trans('askvortsov-categories.forum.index.categories_link')} />,
+        <MobileTabItem
+          route={app.route('categories')}
+          icon="fas fa-th-list"
+          label={app.translator.trans('askvortsov-categories.forum.index.categories_link')}
+        />,
         90
       );
     } else if ('flarum-tags' in flarum.extensions) {

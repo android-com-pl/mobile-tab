@@ -6,8 +6,7 @@ interface MobileTabItemAttrs extends ComponentAttrs {
     icon: string;
     label: string;
 }
-export default class MobileTabItem extends Component {
-    attrs: MobileTabItemAttrs;
+export default class MobileTabItem extends Component<MobileTabItemAttrs> {
     view(vnode: Vnode<MobileTabItemAttrs, this>): Children;
 }
 export {};

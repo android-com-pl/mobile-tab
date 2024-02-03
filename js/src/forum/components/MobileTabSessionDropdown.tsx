@@ -7,6 +7,6 @@ export default class MobileTabSessionDropdown extends SessionDropdown {
     const user = app.session.user;
 
     // The username can be long, so it is better to display "Profile"
-    return [avatar(user), ' ', <span className="Button-label">{app.translator.trans('core.forum.header.profile_button')}</span>];
+    return [avatar(user), ' ', <span className="Button-label">{app.translator.trans('acpl-mobile-tab.forum.profile')}</span>];
   }
 }

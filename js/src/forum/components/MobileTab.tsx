@@ -36,17 +36,13 @@ export default class MobileTab extends Component {
     } else if ('askvortsov-categories' in flarum.extensions) {
       items.add(
         'categories',
-        <MobileTabItem
-          route={app.route('categories')}
-          icon="fas fa-th-list"
-          label={app.translator.trans('askvortsov-categories.forum.index.categories_link')}
-        />,
+        <MobileTabItem route={app.route('categories')} icon="fas fa-th-list" label={app.translator.trans('acpl-mobile-tab.forum.categories')} />,
         90
       );
     } else if ('flarum-tags' in flarum.extensions) {
       items.add(
         'tags',
-        <MobileTabItem route={app.route('tags')} icon="fas fa-tags" label={app.translator.trans('flarum-tags.forum.index.tags_link')} />,
+        <MobileTabItem route={app.route('tags')} icon="fas fa-tags" label={app.translator.trans('acpl-mobile-tab.forum.tags')} />,
         90
       );
     }
@@ -59,11 +55,11 @@ export default class MobileTab extends Component {
         <LinkButton
           href={app.route('notifications')}
           icon="fas fa-bell"
-          title={app.translator.trans('core.forum.notifications.title')}
+          title={app.translator.trans('acpl-mobile-tab.forum.notifications')}
           className="Dropdown NotificationsDropdown"
         >
           {unread ? <span className="NotificationsDropdown-unread">{unread}</span> : ''}
-          {app.translator.trans('core.forum.notifications.title')}
+          {app.translator.trans('acpl-mobile-tab.forum.notifications')}
         </LinkButton>,
         80
       );
@@ -73,7 +69,7 @@ export default class MobileTab extends Component {
       items.add(
         'logIn',
         <Button icon="fas fa-user" className="Button Button--link" onclick={() => app.modal.show(LogInModal, {})}>
-          {app.translator.trans('core.forum.header.log_in_link')}
+          {app.translator.trans('acpl-mobile-tab.forum.log_in')}
         </Button>,
         70
       );

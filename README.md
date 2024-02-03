@@ -1,6 +1,6 @@
 # Mobile Tab Component
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab)
+![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![GitHub Sponsors](https://img.shields.io/badge/Donate-%E2%9D%A4-%23db61a2.svg?&logo=github&logoColor=white&labelColor=181717)](https://github.com/android-com-pl/mobile-tab?sponsor=1)
 
 A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 
@@ -11,13 +11,13 @@ A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 Install with composer:
 
 ```sh
-composer require acpl/mobile-tab:"*"
+composer require acpl/mobile-tab
 ```
 
 ### Updating
 
 ```sh
-composer update acpl/mobile-tab:"*"
+composer update acpl/mobile-tab
 php flarum cache:clear
 ```
 

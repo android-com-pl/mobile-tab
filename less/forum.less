@@ -15,7 +15,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: var(--mobile-tab-height);
+  height: ~"calc(var(--mobile-tab-height) + env(safe-area-inset-bottom, 0))";
   background: var(--mobile-tab-bg);
   box-shadow: var(--mobile-tab-shadow);
   z-index: var(--mobile-tab-zindex);

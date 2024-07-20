@@ -23,18 +23,27 @@ php flarum cache:clear
 
 ### Extending
 
-You can add, modify and delete items with your own extension.
+You can add, modify, and delete items in the mobile tab using your own extension.
 Read: [https://docs.flarum.org/extend/extending-extensions/](https://docs.flarum.org/extend/extending-extensions/)
 
-Examples:
-
+1. Install `acpl/mobile-tab` as your extension's composer dependency or add it as an [optional dependency](https://docs.flarum.org/extend/extending-extensions/#optional-dependencies) in your `composer.json`.
+2. Add `acpl-mobile-tab` to your extension's **webpack.config.js** to ensure proper bundling:
 ```js
+const config = require("flarum-webpack-config");
+
+module.exports = config({
+  useExtensions: ["acpl-mobile-tab"],
+});
+```
+3. You can now import and use mobile tab components in your extension. Here are some **examples** of how to modify the mobile tab:
+```jsx
 import { components } from "@acpl-mobile-tab";
 import { extend } from "flarum/common/extend";
 
 const { MobileTab, MobileTabItem } = components;
 
 export default () => {
+  // Extend the items method of MobileTab prototype
   extend(MobileTab.prototype, "items", (items) => {
     // Add new item
     items.add(
@@ -56,16 +65,13 @@ export default () => {
 };
 ```
 
-If you are using TypeScript, add a path to your [tsconfig.json](https://github.com/flarum/flarum-tsconfig/blob/main/README.md) to enable type hints in your code editor:
+If you are using TypeScript, add the following path to your [tsconfig.json](https://github.com/flarum/flarum-tsconfig/blob/main/README.md) to enable type hints for the mobile tab components in your code editor:
 
 ```json
 {
   "extends": "flarum-tsconfig",
-  // ...
   "compilerOptions": {
-    // ....
     "paths": {
-      // ...
       "@acpl-mobile-tab": [
         "./vendor/acpl/mobile-tab/js/dist-typings/index.d.ts"
       ]

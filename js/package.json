@@ -4,12 +4,12 @@
   "prettier": "@flarum/prettier-config",
   "devDependencies": {
     "@flarum/prettier-config": "^1.0.0",
-    "flarum-tsconfig": "^1.0.2",
-    "flarum-webpack-config": "^2.0.2",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.3",
-    "typescript-coverage-report": "^1.0.0",
-    "webpack": "^5.94.0",
+    "flarum-tsconfig": "^2.0.0",
+    "flarum-webpack-config": "^3.0.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-coverage-report": "^1.1.0",
+    "webpack": "^5.97.1",
     "webpack-cli": "^5.1.4"
   },
   "scripts": {

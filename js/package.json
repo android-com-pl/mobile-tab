@@ -15,8 +15,8 @@
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
-    "format": "prettier --write src",
-    "format-check": "prettier --check src",
+    "format": "prettier --write src ../less/forum.less",
+    "format-check": "prettier --check src ../less/forum.less",
     "analyze": "cross-env ANALYZER=true yarn run build",
     "clean-typings": "npx rimraf dist-typings && mkdir dist-typings",
     "build-typings": "yarn run clean-typings && ([ -e src/@types ] && cp -r src/@types dist-typings/@types || true) && tsc && yarn run post-build-typings",

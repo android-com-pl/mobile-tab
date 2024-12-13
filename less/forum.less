@@ -4,6 +4,7 @@
   --mobile-tab-zindex: var(--zindex-header);
   --mobile-tab-shadow: 0 2px 6px var(--shadow-color);
   --mobile-tab-item-color: var(--header-control-color);
+  --mobile-tab-item-active-color: var(--primary-color);
 }
 
 .MobileTab {
@@ -27,100 +28,65 @@
     align-items: center;
     list-style: none;
     height: 100%;
-
     margin: 0 auto;
     padding: 0 0 env(safe-area-inset-bottom, 0);
     text-align: center;
 
-    li {
+    > li {
       flex-basis: 100%;
-    }
 
-    a,
-    > li > .Button,
-    > li > .Dropdown {
-      color: var(--mobile-tab-item-color);
-      display: block;
-      width: 100%;
-      -webkit-tap-highlight-color: color-mix(in srgb, var(--control-bg) 40%, transparent);
-      padding-top: 5px;
-      height: 100%;
-      text-align: center;
-    }
+      > .ButtonGroup {
+        width: 100%;
+      }
 
-    > li > a {
-      &:hover {
-        text-decoration: none;
+      > .LinkButton,
+      > .ButtonGroup > .Button {
+        position: relative;
+        color: var(--mobile-tab-item-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        height: 100%;
+        -webkit-tap-highlight-color: color-mix(
+          in srgb,
+          var(--control-bg) 40%,
+          transparent
+        );
+        padding: 5px 0;
+
+        .Button-icon {
+          font-size: 20px;
+        }
+
+        .Button-label {
+          font-size: 9px;
+          line-height: 1em;
+          margin: 0;
+        }
+
+        &:hover,
+        &:active {
+          text-decoration: none;
+          background-color: transparent;
+          box-shadow: none;
+        }
+      }
+
+      > [active="true"] {
+        color: var(--primary-color);
       }
     }
 
-    // Style buttons but not buttons in dropdowns
-    > li > .Button > .Button,
-    > li > a > .Button,
-    > li > .Dropdown > .Button > .Button {
-      padding: 0;
-      margin: 0;
-      color: var(--mobile-tab-item-color);
-      background: transparent;
-
-      &-icon {
-        margin-right: 0;
-        margin-bottom: 6px;
-        font-size: 20px;
-      }
-
-      &-label {
-        display: block;
-        font-size: 9px;
-        line-height: 1em;
-        margin: 0;
-      }
+    .SessionDropdown .Avatar {
+      margin: 0 0 5px 0;
+      border: 1px solid var(--control-bg);
     }
 
-    > li > .ButtonGroup.Dropdown {
-      padding: 0;
-    }
-
-    > li > .ButtonGroup.Dropdown > .Button {
-      float: none;
-      width: 100%;
-
-      &:focus,
-      &:active {
-        background: transparent;
-        box-shadow: none;
-      }
-    }
-
-    .item-session {
-      > .Dropdown > .Button {
-        padding: 0;
-      }
-
-      .Button:hover,
-      .Button:active {
-        background: transparent;
-      }
-    }
-
-    .SessionDropdown {
-      .Avatar {
-        margin: 0 0 6px;
-        border: 1px solid var(--control-bg);
-      }
-    }
-
-    a[active="true"] {
-      color: var(--primary-color);
-    }
-
-    .item-notifications .Button-label {
-      position: relative;
-    }
-
-    .NotificationsDropdown-unread {
-      top: -28px;
-      left: 50%;
+    .Bubble {
+      top: 6px;
+      left: 52%;
     }
   }
 }

@@ -71,7 +71,7 @@ If you are using TypeScript, add the following path to your [tsconfig.json](http
   "extends": "flarum-tsconfig",
   "compilerOptions": {
     "paths": {
-      "@acpl-mobile-tab": [
+      "ext:acpl/mobile-tab/forum": [
         "./vendor/acpl/mobile-tab/js/dist-typings/index.d.ts"
       ]
     }

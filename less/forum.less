@@ -50,12 +50,14 @@
         gap: 6px;
         width: 100%;
         height: 100%;
+        padding: 5px 0;
+        line-height: 1;
         -webkit-tap-highlight-color: color-mix(
           in srgb,
           var(--control-bg) 40%,
           transparent
         );
-        padding: 5px 0;
+
 
         .Button-icon {
           font-size: 20px;
@@ -81,8 +83,9 @@
     }
 
     .SessionDropdown .Avatar {
-      margin: 0 0 5px 0;
-      border: 1px solid var(--control-bg);
+      --size: 20px;
+      margin: 0;
+      box-sizing: border-box;
     }
 
     .Bubble {

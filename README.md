@@ -1,6 +1,6 @@
 # Mobile Tab Component
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![GitHub Sponsors](https://img.shields.io/badge/Donate-%E2%9D%A4-%23db61a2.svg?&logo=github&logoColor=white&labelColor=181717)](https://github.com/android-com-pl/mobile-tab?sponsor=1)
+![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab/stats) [![GitHub Sponsors](https://img.shields.io/badge/Donate-%E2%9D%A4-%23db61a2.svg?&logo=github&logoColor=white&labelColor=181717)](https://github.com/android-com-pl/mobile-tab?sponsor=1)
 
 A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 
@@ -23,24 +23,22 @@ php flarum cache:clear
 
 ### Extending
 
+> [!IMPORTANT]  
+> These instructions are for Flarum 2.0.
+> For Flarum 1.x documentation, please refer to:
+> [Flarum 1.x Guide](https://github.com/android-com-pl/mobile-tab/tree/1.x?tab=readme-ov-file#extending)
+
 You can add, modify, and delete items in the mobile tab using your own extension.
-Read: [https://docs.flarum.org/extend/extending-extensions/](https://docs.flarum.org/extend/extending-extensions/)
+Read: [https://docs.flarum.org/2.x/extend/extending-extensions](https://docs.flarum.org/2.x/extend/extending-extensions)
 
-1. Install `acpl/mobile-tab` as your extension's composer dependency or add it as an [optional dependency](https://docs.flarum.org/extend/extending-extensions/#optional-dependencies) in your `composer.json`.
-2. Add `acpl-mobile-tab` to your extension's **webpack.config.js** to ensure proper bundling:
-```js
-const config = require("flarum-webpack-config");
+1. Install `acpl/mobile-tab` as your extension's composer dependency or add it as an [optional dependency](https://docs.flarum.org/2.x/extend/extending-extensions#optional-dependencies) in your `composer.json`.
 
-module.exports = config({
-  useExtensions: ["acpl-mobile-tab"],
-});
-```
-3. You can now import and use mobile tab components in your extension. Here are some **examples** of how to modify the mobile tab:
+2. You can now import and use mobile tab components in your extension. Here are some **examples** of how to modify the mobile tab:
 ```jsx
-import { components } from "@acpl-mobile-tab";
 import { extend } from "flarum/common/extend";
+import LinkButton from 'flarum/common/components/LinkButton';
 
-const { MobileTab, MobileTabItem } = components;
+import MobileTab from "ext:acpl/mobile-tab/forum/components/MobileTab";
 
 export default () => {
   // Extend the items method of MobileTab prototype
@@ -48,11 +46,12 @@ export default () => {
     // Add new item
     items.add(
       "following",
-      <MobileTabItem
+      <LinkButton
         href={app.route("following")}
         icon="fas fa-star"
-        label={app.translator.trans("my-ext.forum.my-item")}
-      />,
+      >
+        {app.translator.trans("my-ext.forum.my-item")}
+      </LinkButton>,
       90,
     );
 

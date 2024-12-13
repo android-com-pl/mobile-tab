@@ -1,7 +1,9 @@
 import MobileTab from './MobileTab';
 import MobileTabSessionDropdown from './MobileTabSessionDropdown';
 
-export const components = {
+const components = {
   MobileTab,
   MobileTabSessionDropdown,
 };
+
+export default components;

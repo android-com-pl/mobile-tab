@@ -1,7 +1,7 @@
 acpl-mobile-tab:
   forum:
-    home: 'Home'
-    all_discussions: 'Discussions'
+    home: "Home"
+    all_discussions: "Discussions"
     tags: => flarum-tags.forum.index.tags_link
     categories: => askvortsov-categories.forum.index.categories_link
     notifications: => core.forum.notifications.title

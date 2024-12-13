@@ -6,6 +6,8 @@
 **/.travis.yml export-ignore
 **/.editorconfig export-ignore
 **/.styleci.yml export-ignore
+**/.lintstagedrc.yml
+.husky export-ignore
 
 **/phpunit.xml export-ignore
 **/tests export-ignore

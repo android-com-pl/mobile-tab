@@ -6,6 +6,8 @@
     "@flarum/prettier-config": "^1.0.0",
     "flarum-tsconfig": "^2.0.0",
     "flarum-webpack-config": "^3.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "prettier": "^3.4.2",
     "typescript": "^5.7.2",
     "typescript-coverage-report": "^1.1.0",
@@ -15,13 +17,14 @@
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
-    "format": "prettier --write src ../less/forum.less",
-    "format-check": "prettier --check src ../less/forum.less",
+    "format": "prettier --write src ../less ../locale",
+    "format-check": "prettier --check src ../less ../locale",
     "analyze": "cross-env ANALYZER=true yarn run build",
     "clean-typings": "npx rimraf dist-typings && mkdir dist-typings",
     "build-typings": "yarn run clean-typings && ([ -e src/@types ] && cp -r src/@types dist-typings/@types || true) && tsc && yarn run post-build-typings",
     "check-typings": "tsc --noEmit --emitDeclarationOnly false",
     "check-typings-coverage": "typescript-coverage-report",
-    "post-build-typings": "find dist-typings -type f -name '*.d.ts' -print0 | xargs -0 sed -i 's,../src/@types,@types,g'"
+    "post-build-typings": "find dist-typings -type f -name '*.d.ts' -print0 | xargs -0 sed -i 's,../src/@types,@types,g'",
+    "prepare": "cd ../ && husky"
   }
 }

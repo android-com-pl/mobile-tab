@@ -1,12 +1,16 @@
 import app from 'flarum/forum/app';
 import SessionDropdown from 'flarum/forum/components/SessionDropdown';
-import avatar from 'flarum/common/helpers/avatar';
+import Avatar from 'flarum/common/components/Avatar';
 
 export default class MobileTabSessionDropdown extends SessionDropdown {
   getButtonContent() {
-    const user = app.session.user;
+    const { user } = app.session;
 
-    // The username can be long, so it is better to display "Profile"
-    return [avatar(user), ' ', <span className="Button-label">{app.translator.trans('acpl-mobile-tab.forum.profile')}</span>];
+    return [
+      <Avatar user={user} />,
+      ' ',
+      // The username can be long, so it is better to display "Profile"
+      <span className="Button-label">{app.translator.trans('acpl-mobile-tab.forum.profile')}</span>,
+    ];
   }
 }

@@ -17,7 +17,8 @@
         }
     ],
     "require": {
-        "flarum/core": "^2.0.0-beta"
+        "flarum/core": "^2.0.0-beta",
+        "php": "^8.2"
     },
     "authors": [
         {

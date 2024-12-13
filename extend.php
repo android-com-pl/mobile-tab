@@ -23,5 +23,4 @@ return [
         ->content(function (Document $document) {
             $document->meta['viewport'] = "{$document->meta['viewport']}, viewport-fit=cover";
         }),
-
 ];

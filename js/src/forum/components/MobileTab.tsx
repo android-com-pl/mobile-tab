@@ -1,4 +1,3 @@
-// External dependencies
 import type { Children, Vnode } from 'mithril';
 import app from 'flarum/forum/app';
 import type { ComponentAttrs } from 'flarum/common/Component';
@@ -7,9 +6,7 @@ import listItems from 'flarum/common/helpers/listItems';
 import ItemList from 'flarum/common/utils/ItemList';
 import LinkButton from 'flarum/common/components/LinkButton';
 import Button from 'flarum/common/components/Button';
-import LogInModal from 'flarum/forum/components/LogInModal';
 
-// Internal dependencies
 import MobileTabItem from './MobileTabItem';
 import MobileTabSessionDropdown from './MobileTabSessionDropdown';
 
@@ -68,7 +65,7 @@ export default class MobileTab extends Component {
     } else {
       items.add(
         'logIn',
-        <Button icon="fas fa-user" className="Button Button--link" onclick={() => app.modal.show(LogInModal, {})}>
+        <Button icon="fas fa-user" className="Button Button--link" onclick={() => app.modal.show(() => import('flarum/forum/components/LogInModal'))}>
           {app.translator.trans('acpl-mobile-tab.forum.log_in')}
         </Button>,
         70

@@ -32,9 +32,9 @@
             "title": "Mobile tab",
             "category": "theme",
             "icon": {
-                "name": "fas fa-ellipsis-h",
-                "backgroundColor": "#0F9D58",
-                "color": "#fff"
+                "name": "fas fa-solid fa-mobile-screen",
+                "backgroundColor": "#00dc51",
+                "color": "#15161E"
             }
         },
         "optional-dependencies": [

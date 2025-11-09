@@ -6,8 +6,6 @@
     "@flarum/prettier-config": "^1.0.0",
     "flarum-tsconfig": "^2.0.0",
     "flarum-webpack-config": "^3.0.2",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3",
     "webpack": "^5.102.1",
@@ -22,7 +20,6 @@
     "clean-typings": "npx rimraf dist-typings && mkdir dist-typings",
     "build-typings": "npm run clean-typings && ([ -e src/@types ] && cp -r src/@types dist-typings/@types || true) && tsc && npm run post-build-typings",
     "post-build-typings": "find dist-typings -type f -name '*.d.ts' -print0 | xargs -0 sed -i 's,../src/@types,@types,g'",
-    "check-typings": "tsc --noEmit --emitDeclarationOnly false",
-    "prepare": "cd ../ && husky"
+    "check-typings": "tsc --noEmit --emitDeclarationOnly false"
   }
 }

@@ -12,8 +12,9 @@ jobs:
       enable_bundlewatch: false
       enable_prettier: true
       enable_typescript: false
+      type_coverage_script: ''
 
       frontend_directory: ./js
       backend_directory: .
       js_package_manager: npm
-      main_git_branch: master
+      main_git_branch: 2.x

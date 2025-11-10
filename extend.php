@@ -16,7 +16,13 @@ return [
     new Extend\Locales(__DIR__.'/locale'),
 
     (new Extend\Settings)
-        ->default('acpl-mobile-tab.items', ['home']),
+        ->default('acpl-mobile-tab.items', ['home', 'tags', 'notifications', 'session'])
+        ->serializeToForum('acplMobileTabItems', 'acpl-mobile-tab.items', function ($value) {
+            if (is_string($value)) {
+                return json_decode($value, true);
+            }
+            return $value;
+        }),
 
     (new Extend\Frontend('forum'))
         ->content(function (Document $document) {

@@ -10,7 +10,7 @@ export default class MobileTabSessionDropdown extends SessionDropdown {
       <Avatar user={user} />,
       ' ',
       // The username can be long, so it is better to display "Profile"
-      <span className="Button-label">{app.translator.trans('acpl-mobile-tab.forum.profile')}</span>,
+      <span className="Button-label">{app.translator.trans('acpl-mobile-tab.lib.item.profile')}</span>,
     ];
   }
 }

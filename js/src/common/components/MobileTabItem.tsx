@@ -1,7 +1,7 @@
-import { Vnode } from 'mithril';
 import Component from 'flarum/common/Component';
-import LinkButton from 'flarum/common/components/LinkButton';
 import { IButtonAttrs } from 'flarum/common/components/Button';
+import LinkButton from 'flarum/common/components/LinkButton';
+import { Vnode } from 'mithril';
 
 export interface MobileTabItemAttrs extends IButtonAttrs {
   href: string;

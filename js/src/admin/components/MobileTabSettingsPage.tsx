@@ -1,11 +1,11 @@
 import app from 'flarum/admin/app';
 import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/ExtensionPage';
-import { Children, Vnode, VnodeDOM } from 'mithril';
-import MobileTabItemsRegistryAdmin from '../MobileTabItemsRegistryAdmin';
-import ItemList from 'flarum/common/utils/ItemList';
-import { MobileTabRegistryItem } from '../../common/types';
 import listItems from 'flarum/common/helpers/listItems';
+import ItemList from 'flarum/common/utils/ItemList';
+import { Children, VnodeDOM } from 'mithril';
 import Sortable from 'sortablejs';
+import { MobileTabRegistryItem } from '../../common/types';
+import MobileTabItemsRegistryAdmin from '../MobileTabItemsRegistryAdmin';
 
 export default class MobileTabSettingsPage extends ExtensionPage {
   protected itemsSettingKey = 'acpl-mobile-tab.items';

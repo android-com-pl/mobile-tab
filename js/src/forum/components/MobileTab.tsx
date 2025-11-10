@@ -1,11 +1,11 @@
-import type { Children, Vnode } from 'mithril';
-import app from 'flarum/forum/app';
 import type { ComponentAttrs } from 'flarum/common/Component';
 import Component from 'flarum/common/Component';
+import Button from 'flarum/common/components/Button';
+import LinkButton from 'flarum/common/components/LinkButton';
 import listItems from 'flarum/common/helpers/listItems';
 import ItemList from 'flarum/common/utils/ItemList';
-import LinkButton from 'flarum/common/components/LinkButton';
-import Button from 'flarum/common/components/Button';
+import app from 'flarum/forum/app';
+import type { Children, Vnode } from 'mithril';
 
 import MobileTabSessionDropdown from './MobileTabSessionDropdown';
 

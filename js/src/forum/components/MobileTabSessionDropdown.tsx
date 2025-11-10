@@ -1,6 +1,6 @@
+import Avatar from 'flarum/common/components/Avatar';
 import app from 'flarum/forum/app';
 import SessionDropdown from 'flarum/forum/components/SessionDropdown';
-import Avatar from 'flarum/common/components/Avatar';
 
 export default class MobileTabSessionDropdown extends SessionDropdown {
   getButtonContent() {

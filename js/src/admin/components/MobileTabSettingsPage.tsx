@@ -1,5 +1,7 @@
 import app from 'flarum/admin/app';
 import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/ExtensionPage';
+import FormSection from 'flarum/admin/components/FormSection';
+import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
 import listItems from 'flarum/common/helpers/listItems';
 import ItemList from 'flarum/common/utils/ItemList';
 import { Children, VnodeDOM } from 'mithril';
@@ -36,12 +38,12 @@ export default class MobileTabSettingsPage extends ExtensionPage {
   content(vnode: VnodeDOM<ExtensionPageAttrs, this>) {
     return (
       <div className="ExtensionPage-settings">
-        <div className="container">
-          <div className="Form" key={this.forcedRefreshKey} oncreate={this.onListCreate.bind(this)}>
+        <div className="container" key={this.forcedRefreshKey} oncreate={this.onListCreate.bind(this)}>
+          <FormSectionGroup>
             {this.availableItemsContent()}
             {this.enabledItemsContent()}
-            <div class="Form-body">{this.submitButton()}</div>
-          </div>
+          </FormSectionGroup>
+          <FormSectionGroup>{this.submitButton()}</FormSectionGroup>
         </div>
       </div>
     );
@@ -49,18 +51,19 @@ export default class MobileTabSettingsPage extends ExtensionPage {
 
   availableItemsContent(): Children {
     return (
-      <div className="MobileTabAvailableItems">
-        <h2 className="MobileTabAvailableItems-header">{app.translator.trans('acpl-mobile-tab.admin.available_items')}</h2>
-        <ul className="MobileTabAvailableItems-list">{listItems(this.availableItems().toArray())}</ul>
-      </div>
+      <FormSection className="MobileTabAvailableItems" label={app.translator.trans('acpl-mobile-tab.admin.available_items')}>
+        <ul className="MobileTabAvailableItems-list MobileTab-items">{listItems(this.availableItems().toArray())}</ul>
+      </FormSection>
     );
   }
 
   enabledItemsContent(): Children {
     return (
-      <nav className="MobileTab MobileTabPreview" style={{ height: '54px', width: '320px', background: '#eee' }}>
-        <ul className="MobileTab-items MobileTabPreview-items">{listItems(this.enabledItems().toArray())}</ul>
-      </nav>
+      <FormSection label={app.translator.trans('acpl-mobile-tab.admin.active_items')}>
+        <nav className="MobileTab MobileTabPreview">
+          <ul className="MobileTab-items MobileTabPreview-items">{listItems(this.enabledItems().toArray())}</ul>
+        </nav>
+      </FormSection>
     );
   }
 

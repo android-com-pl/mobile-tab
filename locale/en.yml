@@ -1,6 +1,7 @@
 acpl-mobile-tab:
   admin:
     available_items: "Available items"
+    active_items: "Active items"
     item:
       session: "Session"
   forum:

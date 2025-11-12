@@ -1,44 +1,63 @@
 import app from 'flarum/common/app';
 import ItemList from 'flarum/common/utils/ItemList';
-import MobileTabItem from './components/MobileTabItem';
-import { MobileTabRegistryItem } from './types';
+import ForumNotificationsTabItem from '../forum/components/ForumNotificationsTabItem';
+import { MobileTabItemDefinition } from './types';
 
 export default class MobileTabItemsRegistry {
   items() {
-    const itemList = new ItemList<MobileTabRegistryItem>();
+    const itemList = new ItemList<MobileTabItemDefinition>();
 
-    itemList.add(
-      'home',
-      <MobileTabItem href={app.routes?.index?.path ?? '/'} icon="fas fa-home">
-        {app.translator.trans('acpl-mobile-tab.lib.item.home')}
-      </MobileTabItem>
-    );
+    itemList.add('home', {
+      key: 'home',
+      icon: 'fas fa-home',
+      href: () => app.route('index'),
+      label: app.translator.trans('acpl-mobile-tab.lib.item.home'),
+      source: 'core',
+    });
 
-    itemList.add(
-      'all_discussions',
-      <MobileTabItem href={app.routes?.index?.path ?? '/all'} icon="fas fa-comments">
-        {app.translator.trans('acpl-mobile-tab.lib.item.all_discussions')}
-      </MobileTabItem>
-    );
+    itemList.add('all_discussions', {
+      key: 'all_discussions',
+      icon: 'fas fa-comments',
+      href: () => app.route('index'),
+      label: app.translator.trans('acpl-mobile-tab.lib.item.all_discussions'),
+      source: 'core',
+    });
 
-    if (app.session.user) {
-      const unread = app.session.user.unreadNotificationCount();
-      itemList.add(
-        'notifications',
-        <MobileTabItem href={app.routes?.notifications?.path ?? '/notifications'} icon="fas fa-bell">
-          {unread ? <span className="Bubble">{unread}</span> : ''}
-          {app.translator.trans('acpl-mobile-tab.lib.item.notifications')}
-        </MobileTabItem>
-      );
-    }
+    itemList.add('notifications', {
+      key: 'notifications',
+      icon: 'fas fa-bell',
+      label: app.translator.trans('acpl-mobile-tab.lib.item.notifications'),
+      canView: !!app.session.user,
+      forumComponent: ForumNotificationsTabItem,
+      source: 'core',
+    });
+
+    itemList.add('session', {
+      key: 'session',
+      icon: 'fas fa-circle-user',
+      label: app.translator.trans('acpl-mobile-tab.lib.item.session'),
+      source: 'core',
+    });
 
     if ('flarum-tags' in flarum.extensions) {
-      itemList.add(
-        'tags',
-        <MobileTabItem href={app.routes?.tags?.path ?? '/tags'} icon="fas fa-tags">
-          {app.translator.trans('acpl-mobile-tab.lib.item.tags')}
-        </MobileTabItem>
-      );
+      itemList.add('tags', {
+        key: 'tags',
+        icon: 'fas fa-tags',
+        href: () => app.route('tags'),
+        label: app.translator.trans('acpl-mobile-tab.lib.item.tags'),
+        source: 'core',
+      });
+    }
+
+    if ('flarum-messages' in flarum.extensions) {
+      itemList.add('messages', {
+        key: 'messages',
+        icon: 'fas fa-envelope',
+        href: () => app.route('messages'),
+        label: app.translator.trans('acpl-mobile-tab.lib.item.messages'),
+        canView: !!app.session.user,
+        source: 'core',
+      });
     }
 
     return itemList;

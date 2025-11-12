@@ -2,11 +2,11 @@ import app from 'flarum/admin/app';
 import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/ExtensionPage';
 import FormSection from 'flarum/admin/components/FormSection';
 import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
-import listItems from 'flarum/common/helpers/listItems';
+import Button from 'flarum/common/components/Button';
 import ItemList from 'flarum/common/utils/ItemList';
 import { Children, VnodeDOM } from 'mithril';
 import Sortable from 'sortablejs';
-import { MobileTabRegistryItem } from '../../common/types';
+import { MobileTabItemDefinition } from '../../common/types';
 import MobileTabItemsRegistryAdmin from '../MobileTabItemsRegistryAdmin';
 
 export default class MobileTabSettingsPage extends ExtensionPage {
@@ -52,7 +52,17 @@ export default class MobileTabSettingsPage extends ExtensionPage {
   availableItemsContent(): Children {
     return (
       <FormSection className="MobileTabAvailableItems" label={app.translator.trans('acpl-mobile-tab.admin.available_items')}>
-        <ul className="MobileTabAvailableItems-list MobileTab-items">{listItems(this.availableItems().toArray())}</ul>
+        <ul className="MobileTabAvailableItems-list MobileTab-items">
+          {this.availableItems()
+            .toArray()
+            .map((item) => (
+              <li className={`item-${item.itemName}`} key={item.key}>
+                <Button className="Button MobileTab-item" icon={item.icon}>
+                  {item.label}
+                </Button>
+              </li>
+            ))}
+        </ul>
       </FormSection>
     );
   }
@@ -61,7 +71,17 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     return (
       <FormSection label={app.translator.trans('acpl-mobile-tab.admin.active_items')}>
         <nav className="MobileTab MobileTabPreview">
-          <ul className="MobileTab-items MobileTabPreview-items">{listItems(this.enabledItems().toArray())}</ul>
+          <ul className="MobileTab-items MobileTabPreview-items">
+            {this.enabledItems()
+              .toArray()
+              .map((item) => (
+                <li className={`item-${item.itemName}`} key={item.key}>
+                  <Button className="Button MobileTab-item" icon={item.icon}>
+                    {item.label}
+                  </Button>
+                </li>
+              ))}
+          </ul>
         </nav>
       </FormSection>
     );
@@ -79,7 +99,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
 
   enabledItems() {
     const registeredItems = new MobileTabItemsRegistryAdmin().items();
-    const enabledItems = new ItemList<MobileTabRegistryItem>();
+    const enabledItems = new ItemList<MobileTabItemDefinition>();
 
     this.activeKeys.forEach((key: string) => {
       if (registeredItems.has(key)) {
@@ -108,10 +128,15 @@ export default class MobileTabSettingsPage extends ExtensionPage {
       group: this.sortableKey,
       animation: 120,
       onAdd: (event) => {
+        if (event.newIndex == null) return;
+
         const key = this.getSortableItemKey(event);
         if (!key) return;
+
         const activeKeys = [...this.activeKeys];
-        this.activeKeys = [...activeKeys, key];
+        activeKeys.splice(event.newIndex, 0, key);
+
+        this.activeKeys = activeKeys;
         this.forcedRefreshKey++;
         m.redraw();
       },

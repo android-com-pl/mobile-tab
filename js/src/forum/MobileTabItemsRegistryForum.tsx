@@ -1,5 +1,6 @@
 import MobileTabItemsRegistry from '../common/MobileTabItemsRegistry';
 import ForumMobileTabSessionItem from './components/ForumMobileTabSessionItem';
+import ForumSearchTabItem from './components/ForumSearchTabItem';
 
 /**
  * Extends the base `MobileTabItemsRegistry` to safely add forum-specific logic.
@@ -18,6 +19,11 @@ export default class MobileTabItemsRegistryForum extends MobileTabItemsRegistry 
     items.setContent('session', {
       ...items.get('session'),
       forumComponent: ForumMobileTabSessionItem,
+    });
+
+    items.setContent('search', {
+      ...items.get('search'),
+      forumComponent: ForumSearchTabItem,
     });
 
     return items;

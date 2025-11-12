@@ -39,6 +39,13 @@ export default class MobileTabItemsRegistry {
       source: 'core',
     });
 
+    itemList.add('search', {
+      key: 'search',
+      icon: 'fas fa-magnifying-glass',
+      label: app.translator.trans('acpl-mobile-tab.lib.item.search'),
+      source: 'core',
+    });
+
     if ('flarum-tags' in flarum.extensions) {
       itemList.add('tags', {
         key: 'tags',

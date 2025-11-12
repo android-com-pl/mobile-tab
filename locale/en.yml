@@ -11,6 +11,7 @@ acpl-mobile-tab:
       categories: "Categories"
       notifications: "Notifications"
       session: "Session"
+      search: "Search"
       log_in: "Log In"
       profile: "Profile"
       tags: "Tags"

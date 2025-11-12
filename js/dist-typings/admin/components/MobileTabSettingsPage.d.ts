@@ -2,6 +2,7 @@ import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/Exten
 import ItemList from 'flarum/common/utils/ItemList';
 import { Children, VnodeDOM } from 'mithril';
 import Sortable from 'sortablejs';
+import { MobileTabItemDefinition } from '../../common/types';
 export default class MobileTabSettingsPage extends ExtensionPage {
     protected itemsSettingKey: string;
     protected sortableKey: string;
@@ -17,8 +18,8 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     content(vnode: VnodeDOM<ExtensionPageAttrs, this>): JSX.Element;
     availableItemsContent(): Children;
     enabledItemsContent(): Children;
-    availableItems(): ItemList<Children>;
-    enabledItems(): ItemList<Children>;
+    availableItems(): ItemList<MobileTabItemDefinition>;
+    enabledItems(): ItemList<MobileTabItemDefinition>;
     getSortableItemKey(event: Sortable.SortableEvent): string | undefined;
     onListCreate(): void;
 }

@@ -56,7 +56,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
           {this.availableItems()
             .toArray()
             .map((item) => (
-              <li className={`item-${item.itemName}`} key={item.key}>
+              <li className={`item-${item.itemName}`} key={item.itemName}>
                 <Button className="Button MobileTab-item" icon={item.icon}>
                   {item.label}
                 </Button>
@@ -75,7 +75,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
             {this.enabledItems()
               .toArray()
               .map((item) => (
-                <li className={`item-${item.itemName}`} key={item.key}>
+                <li className={`item-${item.itemName}`} key={item.itemName}>
                   <Button className="Button MobileTab-item" icon={item.icon}>
                     {item.label}
                   </Button>

@@ -2,11 +2,6 @@ import Component from 'flarum/common/Component';
 import { Children } from 'mithril';
 
 export interface MobileTabItemDefinition {
-  /**
-   * A unique key for the item.
-   * @example 'my_extension_item'
-   */
-  key: string;
   label: string | Children;
   /**
    * The FontAwesome icon class.

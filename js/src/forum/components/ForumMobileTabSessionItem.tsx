@@ -13,7 +13,7 @@ export default class ForumMobileTabSessionItem extends MobileTabComponent {
     return (
       <Button
         className="Button Button--link"
-        icon={this.attrs.definition}
+        icon={this.attrs.definition.icon}
         onclick={() => app.modal.show(() => import('flarum/forum/components/LogInModal'))}
       >
         {app.translator.trans('acpl-mobile-tab.lib.item.log_in')}

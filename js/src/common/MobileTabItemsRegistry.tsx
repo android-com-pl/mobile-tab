@@ -8,7 +8,6 @@ export default class MobileTabItemsRegistry {
     const itemList = new ItemList<MobileTabItemDefinition>();
 
     itemList.add('home', {
-      key: 'home',
       icon: 'fas fa-home',
       href: () => app.route('index'),
       label: app.translator.trans('acpl-mobile-tab.lib.item.home'),
@@ -16,7 +15,6 @@ export default class MobileTabItemsRegistry {
     });
 
     itemList.add('all_discussions', {
-      key: 'all_discussions',
       icon: 'fas fa-comments',
       href: () => app.route('index'),
       label: app.translator.trans('acpl-mobile-tab.lib.item.all_discussions'),
@@ -24,7 +22,6 @@ export default class MobileTabItemsRegistry {
     });
 
     itemList.add('notifications', {
-      key: 'notifications',
       icon: 'fas fa-bell',
       label: app.translator.trans('acpl-mobile-tab.lib.item.notifications'),
       canView: !!app.session.user,
@@ -33,14 +30,12 @@ export default class MobileTabItemsRegistry {
     });
 
     itemList.add('session', {
-      key: 'session',
       icon: 'fas fa-circle-user',
       label: app.translator.trans('acpl-mobile-tab.lib.item.session'),
       source: 'core',
     });
 
     itemList.add('search', {
-      key: 'search',
       icon: 'fas fa-magnifying-glass',
       label: app.translator.trans('acpl-mobile-tab.lib.item.search'),
       source: 'core',
@@ -48,7 +43,6 @@ export default class MobileTabItemsRegistry {
 
     if ('flarum-tags' in flarum.extensions) {
       itemList.add('tags', {
-        key: 'tags',
         icon: 'fas fa-tags',
         href: () => app.route('tags'),
         label: app.translator.trans('acpl-mobile-tab.lib.item.tags'),
@@ -58,7 +52,6 @@ export default class MobileTabItemsRegistry {
 
     if ('flarum-messages' in flarum.extensions) {
       itemList.add('messages', {
-        key: 'messages',
         icon: 'fas fa-envelope',
         href: () => app.route('messages'),
         label: app.translator.trans('acpl-mobile-tab.lib.item.messages'),

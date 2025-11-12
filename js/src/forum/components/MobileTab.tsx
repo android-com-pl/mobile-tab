@@ -14,6 +14,7 @@ export default class MobileTab extends Component {
         <ul className="MobileTab-items">
           {this.items()
             .toArray()
+            .filter((item) => item.canView === undefined || (typeof item.canView === 'function' ? item.canView() : item.canView))
             .map((item) => (
               <li key={item.itemName}>
                 {item.forumComponent ? (

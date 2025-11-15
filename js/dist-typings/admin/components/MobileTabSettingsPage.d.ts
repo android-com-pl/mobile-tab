@@ -1,6 +1,6 @@
 import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/ExtensionPage';
 import ItemList from 'flarum/common/utils/ItemList';
-import { Children, VnodeDOM } from 'mithril';
+import { Children, Vnode } from 'mithril';
 import Sortable from 'sortablejs';
 import { MobileTabItemDefinition } from '../../common/types';
 export default class MobileTabSettingsPage extends ExtensionPage {
@@ -13,11 +13,13 @@ export default class MobileTabSettingsPage extends ExtensionPage {
      * Changing this key forces a full re-render of the list, ensuring a clean sync.
      */
     protected forcedRefreshKey: number;
+    oninit(vnode: Vnode<ExtensionPageAttrs, this>): void;
     get activeKeys(): string[];
     set activeKeys(value: string[]);
-    content(vnode: VnodeDOM<ExtensionPageAttrs, this>): JSX.Element;
+    content(): JSX.Element;
     availableItemsContent(): Children;
     enabledItemsContent(): Children;
+    itemContent(item: ReturnType<ItemList<MobileTabItemDefinition>['toArray']>[number]): Children;
     availableItems(): ItemList<MobileTabItemDefinition>;
     enabledItems(): ItemList<MobileTabItemDefinition>;
     getSortableItemKey(event: Sortable.SortableEvent): string | undefined;

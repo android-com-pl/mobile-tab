@@ -10,6 +10,7 @@ acpl-mobile-tab:
       path: "Path"
       url: "Url"
       icon: "Icon"
+      icon_help: "Enter the name of any <a>FontAwesome</a> icon class, including the <code>fas fa-</code> prefix."
       is_internal_checkbox: "Is it an internal link?"
       open_new_tab_checkbox: "Open link in new tab"
       submit_button: "Save"

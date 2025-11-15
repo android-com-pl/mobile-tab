@@ -80,7 +80,7 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
       <FormGroup
         type="text"
         label={app.translator.trans('acpl-mobile-tab.admin.edit_item.icon')}
-        help="test"
+        help={app.translator.trans('acpl-mobile-tab.admin.edit_item.icon_help', { a: <a href={app.refs.fontawesome} target="_blank" /> })}
         placeholder="fas fa-home"
         bidi={this.icon}
         required

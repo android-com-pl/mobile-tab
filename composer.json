@@ -20,6 +20,11 @@
         "flarum/core": "^2.0.0-beta",
         "php": "^8.2"
     },
+    "autoload": {
+        "psr-4": {
+            "ACPL\\MobileTab\\": "src/"
+        }
+    },
     "authors": [
         {
             "name": "Rafał Całka",

@@ -2,6 +2,16 @@ acpl-mobile-tab:
   admin:
     available_items: "Available items"
     active_items: "Active items"
+    create_new_item_button: "Create new item"
+    edit_item:
+      modal_title: "Edit item"
+      label: "Label"
+      label_placeholder: "My custom item"
+      url: "Url"
+      icon: "Icon"
+      submit_button: "Save"
+      delete_button: "Delete"
+      delete_item_confirmation: "Are you sure you want to delete this item?"
   forum:
 
   lib:

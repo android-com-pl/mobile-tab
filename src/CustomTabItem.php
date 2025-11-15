@@ -1,0 +1,24 @@
+<?php
+
+namespace ACPL\MobileTab;
+
+use Flarum\Database\AbstractModel;
+
+/**
+ * @property int $id
+ * @property string $url
+ * @property string $label
+ * @property string $icon
+ * @property bool $is_new_tab
+ *
+ */
+class CustomTabItem extends AbstractModel
+{
+    protected $table = 'custom_mobile_tab_items';
+
+    protected $casts = [
+        'is_new_tab' => 'bool',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+}

@@ -2,6 +2,7 @@
 
 namespace ACPL\MobileTab;
 
+use ACPL\MobileTab\Api\Resource\CustomTabItemResource;
 use Flarum\Extend;
 use Flarum\Frontend\Document;
 
@@ -30,4 +31,6 @@ return [
         ->content(function (Document $document) {
             $document->meta['viewport'] = "{$document->meta['viewport']}, viewport-fit=cover";
         }),
+
+    new Extend\ApiResource(CustomTabItemResource::class),
 ];

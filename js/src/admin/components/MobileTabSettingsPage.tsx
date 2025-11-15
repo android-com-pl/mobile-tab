@@ -4,10 +4,12 @@ import FormSection from 'flarum/admin/components/FormSection';
 import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
 import Button from 'flarum/common/components/Button';
 import ItemList from 'flarum/common/utils/ItemList';
-import { Children, VnodeDOM } from 'mithril';
+import { Children, Vnode } from 'mithril';
 import Sortable from 'sortablejs';
 import { MobileTabItemDefinition } from '../../common/types';
 import MobileTabItemsRegistryAdmin from '../MobileTabItemsRegistryAdmin';
+import CustomTabItem from '../models/CustomTabItem';
+import EditCustomTabItemModal from './EditCustomTabItemModal';
 
 export default class MobileTabSettingsPage extends ExtensionPage {
   protected itemsSettingKey = 'acpl-mobile-tab.items';
@@ -19,6 +21,16 @@ export default class MobileTabSettingsPage extends ExtensionPage {
    * Changing this key forces a full re-render of the list, ensuring a clean sync.
    */
   protected forcedRefreshKey = 0;
+
+  oninit(vnode: Vnode<ExtensionPageAttrs, this>) {
+    super.oninit(vnode);
+
+    this.loading = true;
+    app.store.find<CustomTabItem>('custom-tab-items').then(() => {
+      this.loading = false;
+      m.redraw();
+    });
+  }
 
   get activeKeys(): string[] {
     const raw = this.setting(this.itemsSettingKey)();
@@ -35,7 +47,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     this.setting(this.itemsSettingKey)(JSON.stringify(value));
   }
 
-  content(vnode: VnodeDOM<ExtensionPageAttrs, this>) {
+  content() {
     return (
       <div className="ExtensionPage-settings">
         <div className="container" key={this.forcedRefreshKey} oncreate={this.onListCreate.bind(this)}>
@@ -57,12 +69,13 @@ export default class MobileTabSettingsPage extends ExtensionPage {
             .toArray()
             .map((item) => (
               <li className={`item-${item.itemName}`} key={item.itemName}>
-                <Button className="Button MobileTab-item" icon={item.icon}>
-                  {item.label}
-                </Button>
+                {this.itemContent(item)}
               </li>
             ))}
         </ul>
+        <Button className="Button" icon="fas fa-plus" onclick={() => app.modal.show(EditCustomTabItemModal)}>
+          {app.translator.trans('acpl-mobile-tab.admin.create_new_item_button')}
+        </Button>
       </FormSection>
     );
   }
@@ -76,14 +89,30 @@ export default class MobileTabSettingsPage extends ExtensionPage {
               .toArray()
               .map((item) => (
                 <li className={`item-${item.itemName}`} key={item.itemName}>
-                  <Button className="Button MobileTab-item" icon={item.icon}>
-                    {item.label}
-                  </Button>
+                  {this.itemContent(item)}
                 </li>
               ))}
           </ul>
         </nav>
       </FormSection>
+    );
+  }
+
+  itemContent(item: ReturnType<ItemList<MobileTabItemDefinition>['toArray']>[number]): Children {
+    return (
+      <Button
+        className="Button MobileTab-item"
+        icon={item.icon}
+        onclick={() => {
+          if (item.source === 'user') {
+            const id = item.itemName.match(/(\d+)$/);
+            if (!id) return;
+            app.modal.show(EditCustomTabItemModal, { model: app.store.getById('custom-tab-items', id[0]) });
+          }
+        }}
+      >
+        {item.label}
+      </Button>
     );
   }
 

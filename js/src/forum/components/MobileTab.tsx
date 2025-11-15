@@ -3,9 +3,9 @@ import Component from 'flarum/common/Component';
 import ItemList from 'flarum/common/utils/ItemList';
 import app from 'flarum/forum/app';
 import type { Children, Vnode } from 'mithril';
-import MobileTabItem from '../../common/components/MobileTabItem';
 import { MobileTabItemDefinition } from '../../common/types';
 import MobileTabItemsRegistryForum from '../MobileTabItemsRegistryForum';
+import MobileTabItem from './MobileTabItem';
 
 export default class MobileTab extends Component {
   view(vnode: Vnode<ComponentAttrs, this>): Children {
@@ -20,7 +20,12 @@ export default class MobileTab extends Component {
                 {item.forumComponent ? (
                   m(item.forumComponent, { definition: item })
                 ) : (
-                  <MobileTabItem href={typeof item.href === 'function' ? item.href() : item.href} icon={item.icon}>
+                  <MobileTabItem
+                    href={typeof item.href === 'function' ? item.href() : item.href}
+                    icon={item.icon}
+                    target={item.isNewTab ? '_blank' : undefined}
+                    external={item.isInternal === undefined ? false : !item.isInternal}
+                  >
                     {item.label}
                   </MobileTabItem>
                 )}

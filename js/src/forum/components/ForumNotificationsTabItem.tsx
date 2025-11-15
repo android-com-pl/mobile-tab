@@ -1,7 +1,7 @@
 import app from 'flarum/common/app';
 import { Children } from 'mithril';
 import MobileTabComponent from '../../common/components/MobileTabComponent';
-import MobileTabItem from '../../common/components/MobileTabItem';
+import MobileTabItem from './MobileTabItem';
 
 export default class ForumNotificationsTabItem extends MobileTabComponent {
   view(): Children {

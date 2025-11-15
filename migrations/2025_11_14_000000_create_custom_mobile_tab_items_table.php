@@ -10,6 +10,7 @@ return Migration::createTable(
         $table->string('label');
         $table->string('url');
         $table->string('icon');
+        $table->boolean('is_internal')->default(true);
         $table->boolean('is_new_tab')->default(false);
         $table->dateTime('created_at')->nullable()->useCurrent();
         $table->dateTime('updated_at')->nullable()->useCurrent()->useCurrentOnUpdate();

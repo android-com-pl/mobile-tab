@@ -9,6 +9,7 @@ use Flarum\Database\AbstractModel;
  * @property string $url
  * @property string $label
  * @property string $icon
+ * @property bool $is_internal
  * @property bool $is_new_tab
  */
 class CustomTabItem extends AbstractModel
@@ -17,6 +18,7 @@ class CustomTabItem extends AbstractModel
 
     protected $casts = [
         'is_new_tab' => 'bool',
+        'is_internal' => 'bool',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

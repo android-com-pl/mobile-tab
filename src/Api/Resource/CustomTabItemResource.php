@@ -54,7 +54,10 @@ class CustomTabItemResource extends Resource\AbstractDatabaseResource
             Schema\Str::make('icon')
                 ->requiredOnCreate()
                 ->writable(),
-            Schema\Boolean::make('isNewTab'),
+            Schema\Boolean::make('isInternal')
+                ->writable(),
+            Schema\Boolean::make('isNewTab')
+                ->writable(),
             Schema\DateTime::make('createdAt'),
             Schema\DateTime::make('updatedAt'),
         ];

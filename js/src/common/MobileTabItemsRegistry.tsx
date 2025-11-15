@@ -66,6 +66,8 @@ export default class MobileTabItemsRegistry {
         label: item.label(),
         icon: item.icon(),
         href: item.url(),
+        isNewTab: item.isNewTab(),
+        isInternal: item.isInternal(),
         source: 'user',
       });
     });

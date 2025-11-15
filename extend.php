@@ -3,11 +3,11 @@
 namespace ACPL\MobileTab;
 
 use ACPL\MobileTab\Api\Resource\CustomTabItemResource;
+use Flarum\Api\Endpoint;
+use Flarum\Api\Resource;
+use Flarum\Api\Schema;
 use Flarum\Extend;
 use Flarum\Frontend\Document;
-use Flarum\Api\Resource;
-use Flarum\Api\Endpoint;
-use Flarum\Api\Schema;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
@@ -27,11 +27,13 @@ return [
         ->default('acpl-mobile-tab.items', ['home', 'tags', 'notifications', 'session'])
         ->serializeToForum('acplMobileTabItems', 'acpl-mobile-tab.items', function ($value) {
             if (is_string($value)) {
-                if(!Str::isJson($value)){
+                if (! Str::isJson($value)) {
                     $logger = resolve(LoggerInterface::class);
                     $logger->error('Invalid JSON in acpl-mobile-tab.items setting');
+
                     return [];
                 }
+
                 return json_decode($value);
             }
 
@@ -45,34 +47,35 @@ return [
 
     new Extend\ApiResource(CustomTabItemResource::class),
     (new Extend\ApiResource(Resource\ForumResource::class))
-        ->fields(fn()=>[
+        ->fields(fn () => [
             Schema\Relationship\ToMany::make('custom-tab-items')
                 ->includable()
-                ->get(function (){
+                ->get(function () {
                     $settings = resolve(SettingsRepositoryInterface::class);
                     $allItems = $settings->get('acpl-mobile-tab.items');
-                    if(is_string($allItems) ){
-                        if(!Str::isJson($allItems)){
+                    if (is_string($allItems)) {
+                        if (! Str::isJson($allItems)) {
                             $logger = resolve(LoggerInterface::class);
                             $logger->error('Invalid JSON in acpl-mobile-tab.items setting');
+
                             return [];
                         }
                         $allItems = json_decode($allItems);
                     }
 
                     $customItemIds = collect($allItems)
-                        ->filter(fn($item)=>str_starts_with($item, 'custom-'))
-                        ->map(fn($item)=>str_replace('custom-', '', $item))
+                        ->filter(fn ($item) => str_starts_with($item, 'custom-'))
+                        ->map(fn ($item) => str_replace('custom-', '', $item))
                         ->toArray();
 
-                    if(empty($customItemIds)){
+                    if (empty($customItemIds)) {
                         return [];
                     }
 
                     return CustomTabItem::query()->whereIn('id', $customItemIds)->get()->all();
                 })
         ])
-    ->endpoint(Endpoint\Show::class, function (Endpoint\Show $endpoint){
+    ->endpoint(Endpoint\Show::class, function (Endpoint\Show $endpoint) {
         return $endpoint->addDefaultInclude(['custom-tab-items']);
     }),
 ];

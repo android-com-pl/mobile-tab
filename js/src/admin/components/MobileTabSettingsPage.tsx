@@ -6,9 +6,9 @@ import Button from 'flarum/common/components/Button';
 import ItemList from 'flarum/common/utils/ItemList';
 import { Children, Vnode } from 'mithril';
 import Sortable from 'sortablejs';
+import CustomTabItem from '../../common/models/CustomTabItem';
 import { MobileTabItemDefinition } from '../../common/types';
 import MobileTabItemsRegistryAdmin from '../MobileTabItemsRegistryAdmin';
-import CustomTabItem from '../models/CustomTabItem';
 import EditCustomTabItemModal from './EditCustomTabItemModal';
 
 export default class MobileTabSettingsPage extends ExtensionPage {

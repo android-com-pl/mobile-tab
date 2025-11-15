@@ -1,5 +1,6 @@
 import app from 'flarum/common/app';
 import ItemList from 'flarum/common/utils/ItemList';
+import CustomTabItem from '../admin/models/CustomTabItem';
 import ForumNotificationsTabItem from '../forum/components/ForumNotificationsTabItem';
 import { MobileTabItemDefinition } from './types';
 
@@ -59,6 +60,15 @@ export default class MobileTabItemsRegistry {
         source: 'core',
       });
     }
+
+    app.store.all<CustomTabItem>('custom-tab-items').forEach((item) => {
+      itemList.add(`custom-${item.id()}`, {
+        label: item.label(),
+        icon: item.icon(),
+        href: item.url(),
+        source: 'user',
+      });
+    });
 
     return itemList;
   }

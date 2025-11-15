@@ -7,7 +7,7 @@ import extractText from 'flarum/common/utils/extractText';
 import ItemList from 'flarum/common/utils/ItemList';
 import Stream from 'flarum/common/utils/Stream';
 import { Children, Vnode } from 'mithril';
-import CustomTabItem from '../models/CustomTabItem';
+import CustomTabItem from '../../common/models/CustomTabItem';
 
 interface EditCustomTabItemModalAttrs extends IFormModalAttrs {
   model?: CustomTabItem;

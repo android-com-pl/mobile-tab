@@ -11,6 +11,8 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
     protected label: Stream<string>;
     protected icon: Stream<string>;
     protected url: Stream<string>;
+    protected isInternal: Stream<boolean>;
+    protected isNewTab: Stream<boolean>;
     oninit(vnode: Vnode<EditCustomTabItemModalAttrs, this>): void;
     className(): string;
     title(): any;
@@ -20,6 +22,8 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
         label: any;
         url: any;
         icon: any;
+        isInternal: any;
+        isNewTab: any;
     };
     onsubmit(e: SubmitEvent): void;
     delete(): void;

@@ -26,6 +26,8 @@ export interface MobileTabItemDefinition {
      * This is only used if a custom `forumComponent` is not provided, as it's an attribute for the default `MobileTabItem` component.
      */
     href?: string | (() => string);
+    isInternal?: boolean;
+    isNewTab?: boolean;
     /**
      * The source of the item, used to distinguish core items from extension-added or user-created items (from admin settings).
      */

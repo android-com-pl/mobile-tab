@@ -2,11 +2,11 @@
 
 namespace ACPL\MobileTab\Api\Resource;
 
+use ACPL\MobileTab\CustomTabItem;
 use Flarum\Api\Endpoint;
 use Flarum\Api\Resource;
 use Flarum\Api\Schema;
 use Flarum\Api\Sort\SortColumn;
-use ACPL\MobileTab\CustomTabItem;
 
 /**
  * @extends Resource\AbstractDatabaseResource<CustomTabItem>

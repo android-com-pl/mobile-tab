@@ -10,7 +10,6 @@ use Flarum\Database\AbstractModel;
  * @property string $label
  * @property string $icon
  * @property bool $is_new_tab
- *
  */
 class CustomTabItem extends AbstractModel
 {

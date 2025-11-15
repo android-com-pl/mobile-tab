@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
-
 use Flarum\Database\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 return Migration::createTable(
     'custom_mobile_tab_items',
@@ -16,4 +15,3 @@ return Migration::createTable(
         $table->dateTime('updated_at')->nullable()->useCurrent()->useCurrentOnUpdate();
     }
 );
-

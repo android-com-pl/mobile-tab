@@ -1,6 +1,6 @@
 import app from 'flarum/common/app';
 import ItemList from 'flarum/common/utils/ItemList';
-import CustomTabItem from '../admin/models/CustomTabItem';
+import CustomTabItem from '../common/models/CustomTabItem';
 import ForumNotificationsTabItem from '../forum/components/ForumNotificationsTabItem';
 import { MobileTabItemDefinition } from './types';
 

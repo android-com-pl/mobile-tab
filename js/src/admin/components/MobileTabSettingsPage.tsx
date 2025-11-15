@@ -3,6 +3,7 @@ import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/Exten
 import FormSection from 'flarum/admin/components/FormSection';
 import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
 import Button from 'flarum/common/components/Button';
+import classList from 'flarum/common/utils/classList';
 import ItemList from 'flarum/common/utils/ItemList';
 import { Children, Vnode } from 'mithril';
 import Sortable from 'sortablejs';
@@ -49,7 +50,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
 
   content() {
     return (
-      <div className="ExtensionPage-settings">
+      <div className="ExtensionPage-settings MobileTabSettingsPage">
         <div className="container" key={this.forcedRefreshKey} oncreate={this.onListCreate.bind(this)}>
           <FormSectionGroup>
             {this.availableItemsContent()}
@@ -99,9 +100,11 @@ export default class MobileTabSettingsPage extends ExtensionPage {
   }
 
   itemContent(item: ReturnType<ItemList<MobileTabItemDefinition>['toArray']>[number]): Children {
+    const source = item.source ?? 'extension';
+
     return (
       <Button
-        className="Button MobileTab-item"
+        className={classList('Button', { 'Button--dashed': source !== 'user' }, 'MobileTab-item', { 'MobileTab-item--editable': source === 'user' })}
         icon={item.icon}
         onclick={() => {
           if (item.source === 'user') {

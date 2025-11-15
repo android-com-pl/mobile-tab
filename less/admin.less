@@ -1,5 +1,11 @@
 @import "./components/MobileTab";
 
+.MobileTabSettingsPage {
+  > .container > .FormSectionGroup > .FormSection {
+    margin-bottom: 1.8rem;
+  }
+}
+
 .MobileTabAvailableItems-list {
   list-style: none;
   padding-left: 0;
@@ -21,16 +27,18 @@
   }
 
   &-items {
-    > li {
-      .Button {
-        background: none;
-      }
-    }
+    gap: 0.3rem;
   }
 }
 
-.EditCustomTabItemModal{
-  &-delete{
+.MobileTab-item {
+  &:not(&--editable) {
+    cursor: move;
+  }
+}
+
+.EditCustomTabItemModal {
+  &-delete {
     margin-left: auto;
   }
 }

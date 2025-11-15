@@ -10,7 +10,7 @@ export default class MobileTabItemsRegistry {
 
     itemList.add('home', {
       icon: 'fas fa-home',
-      href: () => app.route('index'),
+      href: '/',
       label: app.translator.trans('acpl-mobile-tab.lib.item.home'),
       source: 'core',
     });

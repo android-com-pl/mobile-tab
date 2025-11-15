@@ -52,27 +52,26 @@ return [
                 ->includable()
                 ->get(function () {
                     $settings = resolve(SettingsRepositoryInterface::class);
-                    $allItems = $settings->get('acpl-mobile-tab.items');
-                    if (is_string($allItems)) {
-                        if (! Str::isJson($allItems)) {
+                    $activeItems = $settings->get('acpl-mobile-tab.items');
+                    if (is_string($activeItems)) {
+                        if (! Str::isJson($activeItems)) {
                             $logger = resolve(LoggerInterface::class);
                             $logger->error('Invalid JSON in acpl-mobile-tab.items setting');
 
                             return [];
                         }
-                        $allItems = json_decode($allItems);
+                        $activeItems = json_decode($activeItems);
                     }
 
-                    $customItemIds = collect($allItems)
+                    $customActiveItemIds = collect($activeItems)
                         ->filter(fn ($item) => str_starts_with($item, 'custom-'))
-                        ->map(fn ($item) => str_replace('custom-', '', $item))
-                        ->toArray();
+                        ->map(fn ($item) => str_replace('custom-', '', $item));
 
-                    if (empty($customItemIds)) {
+                    if ($customActiveItemIds->isEmpty()) {
                         return [];
                     }
 
-                    return CustomTabItem::query()->whereIn('id', $customItemIds)->get()->all();
+                    return CustomTabItem::query()->whereIn('id', $customActiveItemIds)->get()->all();
                 })
         ])
     ->endpoint(Endpoint\Show::class, function (Endpoint\Show $endpoint) {

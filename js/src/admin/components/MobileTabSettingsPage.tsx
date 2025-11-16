@@ -9,7 +9,7 @@ import { Children, Vnode } from 'mithril';
 import Sortable from 'sortablejs';
 import CustomTabItem from '../../common/models/CustomTabItem';
 import { MobileTabItemDefinition } from '../../common/types';
-import MobileTabItemsRegistryAdmin from '../MobileTabItemsRegistryAdmin';
+import MobileTabItemsRegistryAdmin from '../data/MobileTabItemsRegistryAdmin';
 import EditCustomTabItemModal from './EditCustomTabItemModal';
 
 export default class MobileTabSettingsPage extends ExtensionPage {

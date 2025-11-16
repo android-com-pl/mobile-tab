@@ -1,4 +1,4 @@
-import MobileTabItemsRegistry from '../common/MobileTabItemsRegistry';
+import MobileTabItemsRegistry from '../../common/MobileTabItemsRegistry';
 
 export default class MobileTabItemsRegistryAdmin extends MobileTabItemsRegistry {
   items() {

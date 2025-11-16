@@ -19,7 +19,7 @@
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "analyze": "cross-env ANALYZER=true npm run build",
-    "format": "prettier --write src ../less ../locale",
+    "format": "prettier --write src ../less ../locale ../README.md",
     "format-check": "prettier --check src ../less ../locale",
     "clean-typings": "npx rimraf dist-typings && mkdir dist-typings",
     "build-typings": "npm run clean-typings && ([ -e src/@types ] && cp -r src/@types dist-typings/@types || true) && tsc && npm run post-build-typings",

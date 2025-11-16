@@ -1,6 +1,6 @@
-import MobileTabItemsRegistry from '../common/MobileTabItemsRegistry';
-import ForumMobileTabSessionItem from './components/ForumMobileTabSessionItem';
-import ForumSearchTabItem from './components/ForumSearchTabItem';
+import MobileTabItemsRegistry from '../../common/MobileTabItemsRegistry';
+import ForumMobileTabSessionItem from '../components/ForumMobileTabSessionItem';
+import ForumSearchTabItem from '../components/ForumSearchTabItem';
 
 /**
  * Extends the base `MobileTabItemsRegistry` to safely add forum-specific logic.

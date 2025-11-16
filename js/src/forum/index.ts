@@ -12,5 +12,3 @@ app.initializers.add('acpl/mobile-tab', () => {
     m.mount(document.body.appendChild(mTab), MobileTab);
   });
 });
-
-export * from './components';

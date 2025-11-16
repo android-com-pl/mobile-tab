@@ -4,7 +4,7 @@ import ItemList from 'flarum/common/utils/ItemList';
 import app from 'flarum/forum/app';
 import type { Children, Vnode } from 'mithril';
 import { MobileTabItemDefinition } from '../../common/types';
-import MobileTabItemsRegistryForum from '../MobileTabItemsRegistryForum';
+import MobileTabItemsRegistryForum from '../data/MobileTabItemsRegistryForum';
 import MobileTabItem from './MobileTabItem';
 
 export default class MobileTab extends Component {

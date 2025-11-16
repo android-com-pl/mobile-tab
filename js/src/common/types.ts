@@ -8,7 +8,6 @@ export interface MobileTabItemDefinition {
    * @example icon: 'fas fa-home'
    */
   icon: string;
-  priority?: number;
   /**
    * A boolean or a function to determine if the item should be displayed.
    * This is checked on the forum frontend before rendering.

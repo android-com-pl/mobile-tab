@@ -38,7 +38,11 @@ return [
             }
 
             return $value;
-        }),
+        })
+        ->default('acpl-mobile-tab.hide_on_scroll', true)
+        ->serializeToForum('acplMobileTabHideOnScroll', 'acpl-mobile-tab.hide_on_scroll', 'boolval')
+        ->default('acpl-mobile-tab.scroll_threshold', 80)
+        ->serializeToForum('acplMobileTabScrollThreshold', 'acpl-mobile-tab.scroll_threshold', 'intval'),
 
     (new Extend\Frontend('forum'))
         ->content(function (Document $document) {

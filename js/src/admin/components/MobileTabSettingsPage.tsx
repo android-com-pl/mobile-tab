@@ -3,6 +3,7 @@ import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/Exten
 import FormSection from 'flarum/admin/components/FormSection';
 import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
 import Button from 'flarum/common/components/Button';
+import Form from 'flarum/common/components/Form';
 import classList from 'flarum/common/utils/classList';
 import ItemList from 'flarum/common/utils/ItemList';
 import { Children, Vnode } from 'mithril';
@@ -56,9 +57,28 @@ export default class MobileTabSettingsPage extends ExtensionPage {
             {this.availableItemsContent()}
             {this.enabledItemsContent()}
           </FormSectionGroup>
+          {this.settingsContent()}
           <FormSectionGroup>{this.submitButton()}</FormSectionGroup>
         </div>
       </div>
+    );
+  }
+
+  settingsContent(): Children {
+    return (
+      <Form>
+        {this.buildSettingComponent({
+          type: 'boolean',
+          setting: 'acpl-mobile-tab.hide_on_scroll',
+          label: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.toggle_label'),
+        })}
+        {this.buildSettingComponent({
+          type: 'number',
+          setting: 'acpl-mobile-tab.scroll_threshold',
+          label: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.threshold_label'),
+          help: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.threshold_help'),
+        })}
+      </Form>
     );
   }
 

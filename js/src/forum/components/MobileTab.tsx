@@ -16,7 +16,11 @@ export default class MobileTab extends Component {
 
   oncreate(vnode: Vnode<ComponentAttrs, this>) {
     super.oncreate(vnode);
-    addEventListener('scroll', this.scrollHandler, { passive: true });
+
+    this.scrollThreshold = app.forum.attribute<number>('acplMobileTabScrollThreshold') ?? 80;
+    if (app.forum.attribute<boolean>('acplMobileTabHideOnScroll') ?? true) {
+      addEventListener('scroll', this.scrollHandler, { passive: true });
+    }
   }
 
   onremove(vnode: Vnode<ComponentAttrs, this>) {

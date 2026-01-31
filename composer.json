@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "flarum/core": "^2.0.0-beta",
+        "flarum/core": "^2.0.0-beta.6",
         "php": "^8.2"
     },
     "autoload": {
@@ -43,7 +43,7 @@
             "title": "Mobile tab",
             "category": "theme",
             "icon": {
-                "name": "fas fa-solid fa-mobile-screen",
+                "name": "fas fa-mobile-screen",
                 "backgroundColor": "#00dc51",
                 "color": "#15161E"
             }

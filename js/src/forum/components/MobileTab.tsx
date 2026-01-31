@@ -10,14 +10,13 @@ import MobileTabItem from './MobileTabItem';
 
 export default class MobileTab extends Component {
   private lastScrollTop = 0;
-  private scrollThreshold = 80;
+  private scrollThreshold = app.forum.attribute<number>('acplMobileTabScrollThreshold') ?? 80;
   private scrollHandler = this.handleScroll.bind(this);
   private isHidden = false;
 
   oncreate(vnode: Vnode<ComponentAttrs, this>) {
     super.oncreate(vnode);
 
-    this.scrollThreshold = app.forum.attribute<number>('acplMobileTabScrollThreshold') ?? 80;
     if (app.forum.attribute<boolean>('acplMobileTabHideOnScroll') ?? true) {
       addEventListener('scroll', this.scrollHandler, { passive: true });
     }

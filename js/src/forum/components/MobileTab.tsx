@@ -11,20 +11,19 @@ import MobileTabItem from './MobileTabItem';
 export default class MobileTab extends Component {
   private lastScrollTop = 0;
   private scrollThreshold = app.forum.attribute<number>('acplMobileTabScrollThreshold') ?? 80;
-  private scrollHandler = this.handleScroll.bind(this);
   private isHidden = false;
 
   oncreate(vnode: Vnode<ComponentAttrs, this>) {
     super.oncreate(vnode);
 
     if (app.forum.attribute<boolean>('acplMobileTabHideOnScroll') ?? true) {
-      addEventListener('scroll', this.scrollHandler, { passive: true });
+      addEventListener('scroll', this.handleScroll, { passive: true });
     }
   }
 
   onremove(vnode: Vnode<ComponentAttrs, this>) {
     super.onremove(vnode);
-    removeEventListener('scroll', this.scrollHandler);
+    removeEventListener('scroll', this.handleScroll);
   }
 
   view(vnode: Vnode<ComponentAttrs, this>): Children {
@@ -83,7 +82,7 @@ export default class MobileTab extends Component {
     this.isHidden = true;
   };
 
-  handleScroll(event: Event) {
+  handleScroll = (event: Event) => {
     const scrollTop = window.pageYOffset;
 
     this.resetScrollReference();
@@ -106,7 +105,7 @@ export default class MobileTab extends Component {
     }
 
     this.lastScrollTop = scrollTop;
-  }
+  };
 
   /**
    * Reset the reference point when scrolling stops.

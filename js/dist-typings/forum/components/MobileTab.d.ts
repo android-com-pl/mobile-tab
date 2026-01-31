@@ -6,7 +6,6 @@ import { MobileTabItemDefinition } from '../../common/types';
 export default class MobileTab extends Component {
     private lastScrollTop;
     private scrollThreshold;
-    private scrollHandler;
     private isHidden;
     oncreate(vnode: Vnode<ComponentAttrs, this>): void;
     onremove(vnode: Vnode<ComponentAttrs, this>): void;
@@ -14,7 +13,7 @@ export default class MobileTab extends Component {
     items(): ItemList<MobileTabItemDefinition>;
     show: () => void;
     hide: () => void;
-    handleScroll(event: Event): void;
+    handleScroll: (event: Event) => void;
     /**
      * Reset the reference point when scrolling stops.
      * This prevents small, accumulated deltas from triggering visibility changes immediately after the user pauses and resumes scrolling.

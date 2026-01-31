@@ -1,6 +1,7 @@
 import type { ComponentAttrs } from 'flarum/common/Component';
 import Component from 'flarum/common/Component';
 import ItemList from 'flarum/common/utils/ItemList';
+import { debounce } from 'flarum/common/utils/throttleDebounce';
 import app from 'flarum/forum/app';
 import type { Children, Vnode } from 'mithril';
 import { MobileTabItemDefinition } from '../../common/types';
@@ -8,6 +9,21 @@ import MobileTabItemsRegistryForum from '../data/MobileTabItemsRegistryForum';
 import MobileTabItem from './MobileTabItem';
 
 export default class MobileTab extends Component {
+  private lastScrollTop = 0;
+  private scrollThreshold = 80;
+  private scrollHandler = this.handleScroll.bind(this);
+  private isHidden = false;
+
+  oncreate(vnode: Vnode<ComponentAttrs, this>) {
+    super.oncreate(vnode);
+    addEventListener('scroll', this.scrollHandler, { passive: true });
+  }
+
+  onremove(vnode: Vnode<ComponentAttrs, this>) {
+    super.onremove(vnode);
+    removeEventListener('scroll', this.scrollHandler);
+  }
+
   view(vnode: Vnode<ComponentAttrs, this>): Children {
     return (
       <nav className="MobileTab">
@@ -49,4 +65,51 @@ export default class MobileTab extends Component {
 
     return items;
   }
+
+  show = () => {
+    if (!this.isHidden) return;
+    this.element.classList.remove('MobileTab--hidden');
+    this.element.removeAttribute('inert');
+    this.isHidden = false;
+  };
+
+  hide = () => {
+    if (this.isHidden) return;
+    this.element.classList.add('MobileTab--hidden');
+    this.element.setAttribute('inert', '');
+    this.isHidden = true;
+  };
+
+  handleScroll(event: Event) {
+    const scrollTop = window.pageYOffset;
+
+    this.resetScrollReference();
+
+    if (scrollTop <= 0) {
+      this.show();
+      this.lastScrollTop = 0;
+      return;
+    }
+
+    // Ignore small movements
+    if (Math.abs(scrollTop - this.lastScrollTop) < this.scrollThreshold) {
+      return;
+    }
+
+    if (scrollTop > this.lastScrollTop) {
+      this.hide();
+    } else {
+      this.show();
+    }
+
+    this.lastScrollTop = scrollTop;
+  }
+
+  /**
+   * Reset the reference point when scrolling stops.
+   * This prevents small, accumulated deltas from triggering visibility changes immediately after the user pauses and resumes scrolling.
+   */
+  private resetScrollReference = debounce(150, () => {
+    this.lastScrollTop = window.pageYOffset;
+  });
 }

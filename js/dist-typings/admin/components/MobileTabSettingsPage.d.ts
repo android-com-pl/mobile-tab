@@ -17,6 +17,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     get activeKeys(): string[];
     set activeKeys(value: string[]);
     content(): JSX.Element;
+    settingsContent(): Children;
     availableItemsContent(): Children;
     enabledItemsContent(): Children;
     itemContent(item: ReturnType<ItemList<MobileTabItemDefinition>['toArray']>[number]): Children;

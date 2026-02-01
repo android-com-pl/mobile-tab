@@ -1,5 +1,8 @@
 :root {
-  --mobile-tab-height: 54px;
+  --mobile-tab-base-height: 54px;
+  --mobile-tab-height: calc(
+    var(--mobile-tab-base-height) + env(safe-area-inset-bottom, 0)
+  );
   --mobile-tab-bg: var(--body-bg);
   --mobile-tab-zindex: var(--zindex-header);
   --mobile-tab-shadow: 0 2px 6px var(--shadow-color);
@@ -16,7 +19,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: ~"calc(var(--mobile-tab-height) + env(safe-area-inset-bottom, 0))";
+  height: var(--mobile-tab-height);
   background: var(--mobile-tab-bg);
   box-shadow: var(--mobile-tab-shadow);
   z-index: var(--mobile-tab-zindex);

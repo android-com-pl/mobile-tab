@@ -2,17 +2,17 @@
   "name": "@acpl/mobile-tab",
   "private": true,
   "dependencies": {
-    "sortablejs": "^1.15.6"
+    "sortablejs": "^1.15.7"
   },
   "devDependencies": {
     "@flarum/prettier-config": "^1.0.0",
     "@types/sortablejs": "^1.15.9",
     "flarum-tsconfig": "^2.0.0",
     "flarum-webpack-config": "^3.0.2",
-    "prettier": "^3.6.2",
+    "prettier": "^3.8.1",
     "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^5.9.3",
-    "webpack": "^5.102.1",
+    "webpack": "^5.105.3",
     "webpack-cli": "^6.0.1"
   },
   "scripts": {

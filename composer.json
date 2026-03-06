@@ -22,7 +22,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ACPL\\MobileTab\\": "src/"
+            "Acpl\\MobileTab\\": "src/"
         }
     },
     "authors": [

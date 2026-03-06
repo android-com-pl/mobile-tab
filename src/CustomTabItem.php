@@ -1,6 +1,6 @@
 <?php
 
-namespace ACPL\MobileTab;
+namespace Acpl\MobileTab;
 
 use Flarum\Database\AbstractModel;
 

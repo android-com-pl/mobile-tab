@@ -1,8 +1,8 @@
 <?php
 
-namespace ACPL\MobileTab\Api\Resource;
+namespace Acpl\MobileTab\Api\Resource;
 
-use ACPL\MobileTab\CustomTabItem;
+use Acpl\MobileTab\CustomTabItem;
 use Flarum\Api\Endpoint;
 use Flarum\Api\Resource;
 use Flarum\Api\Schema;

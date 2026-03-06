@@ -61,6 +61,16 @@ export default class MobileTabItemsRegistry {
       });
     }
 
+    if ('fof-byobu' in flarum.extensions) {
+      itemList.add('fof-byobu', {
+        icon: app.forum.attribute('byobu.icon-badge') || 'fas fa-map',
+        href: () => app.route('byobuPrivate'),
+        label: app.translator.trans('acpl-mobile-tab.lib.item.fof-byobu'),
+        canView: !!app.session.user,
+        source: 'core',
+      });
+    }
+
     app.store.all<CustomTabItem>('custom-tab-items').forEach((item) => {
       itemList.add(`custom-${item.id()}`, {
         label: item.label(),

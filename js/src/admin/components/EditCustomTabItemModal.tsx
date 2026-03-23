@@ -1,6 +1,5 @@
 import app from 'flarum/admin/app';
 import Button from 'flarum/common/components/Button';
-import Form from 'flarum/common/components/Form';
 import FormGroup from 'flarum/common/components/FormGroup';
 import FormModal, { IFormModalAttrs } from 'flarum/common/components/FormModal';
 import Icon from 'flarum/common/components/Icon';
@@ -54,11 +53,7 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
   }
 
   content() {
-    return (
-      <div className="Modal-body">
-        <Form>{this.fields().toArray()}</Form>
-      </div>
-    );
+    return <div className="Modal-body Form">{this.fields().toArray()}</div>;
   }
 
   fields() {
@@ -70,7 +65,7 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
         type="text"
         label={app.translator.trans('acpl-mobile-tab.admin.edit_item.label')}
         placeholder={app.translator.trans('acpl-mobile-tab.admin.edit_item.label_placeholder')}
-        bidi={this.label}
+        stream={this.label}
         required
       />
     );
@@ -82,7 +77,7 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
         label={app.translator.trans('acpl-mobile-tab.admin.edit_item.icon')}
         help={app.translator.trans('acpl-mobile-tab.admin.edit_item.icon_help', { a: <a href={app.refs.fontawesome} target="_blank" /> })}
         placeholder="fas fa-home"
-        bidi={this.icon}
+        stream={this.icon}
         required
       />
     );
@@ -93,26 +88,14 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
         type={this.isInternal() ? 'text' : 'url'}
         label={app.translator.trans(`acpl-mobile-tab.admin.edit_item.${this.isInternal() ? 'path' : 'url'}`)}
         placeholder={this.isInternal() ? '/example-path' : 'https://example.com'}
-        bidi={this.url}
+        stream={this.url}
         required
       />
     );
 
     items.add('checkboxes', [
-      <FormGroup
-        type="boolean"
-        label={app.translator.trans('acpl-mobile-tab.admin.edit_item.is_internal_checkbox')}
-        // bidi is not working for a Checkbox component
-        state={this.isInternal()}
-        onchange={(value: boolean) => this.isInternal(value)}
-      />,
-      <FormGroup
-        type="boolean"
-        label={app.translator.trans('acpl-mobile-tab.admin.edit_item.open_new_tab_checkbox')}
-        // bidi is not working for a Checkbox component
-        state={this.isNewTab()}
-        onchange={(value: boolean) => this.isNewTab(value)}
-      />,
+      <FormGroup type="boolean" label={app.translator.trans('acpl-mobile-tab.admin.edit_item.is_internal_checkbox')} stream={this.isInternal} />,
+      <FormGroup type="boolean" label={app.translator.trans('acpl-mobile-tab.admin.edit_item.open_new_tab_checkbox')} stream={this.isNewTab} />,
     ]);
 
     items.add(

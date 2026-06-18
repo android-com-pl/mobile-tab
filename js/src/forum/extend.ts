@@ -1,3 +1,3 @@
-import commonExtend from '../common/exted';
+import commonExtend from '../common/extend';
 
 export default [...commonExtend];

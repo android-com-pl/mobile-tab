@@ -1,9 +1,6 @@
 {
   "name": "@acpl/mobile-tab",
   "private": true,
-  "dependencies": {
-    "sortablejs": "^1.15.7"
-  },
   "devDependencies": {
     "@flarum/prettier-config": "^1.0.0",
     "@types/sortablejs": "^1.15.9",

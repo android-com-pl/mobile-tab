@@ -7,7 +7,7 @@ import Form from 'flarum/common/components/Form';
 import classList from 'flarum/common/utils/classList';
 import ItemList from 'flarum/common/utils/ItemList';
 import { Children, Vnode } from 'mithril';
-import Sortable from 'sortablejs';
+import type Sortable from 'sortablejs';
 import CustomTabItem from '../../common/models/CustomTabItem';
 import { MobileTabItemDefinition } from '../../common/types';
 import MobileTabItemsRegistryAdmin from '../data/MobileTabItemsRegistryAdmin';
@@ -169,14 +169,16 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     return match.replace('item-', '');
   }
 
-  onListCreate() {
-    this.sortableAvailableItems = new Sortable(this.element.querySelector('.MobileTabAvailableItems-list')!, {
+  async onListCreate() {
+    const { default: sortableModule }: { default: typeof Sortable } = await import('flarum/admin/utils/loadSortable');
+
+    this.sortableAvailableItems = sortableModule.create(this.element.querySelector('.MobileTabAvailableItems-list')!, {
       group: this.sortableKey,
       animation: 150,
       sort: false,
     });
 
-    this.sortableEnabledItems = new Sortable(this.element.querySelector('.MobileTabPreview-items')!, {
+    this.sortableEnabledItems = sortableModule.create(this.element.querySelector('.MobileTabPreview-items')!, {
       group: this.sortableKey,
       animation: 120,
       onAdd: (event) => {

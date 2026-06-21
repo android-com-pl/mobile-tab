@@ -83,7 +83,7 @@ export default class MobileTab extends Component {
   };
 
   handleScroll = (event: Event) => {
-    const scrollTop = window.pageYOffset;
+    const scrollTop = window.scrollY;
 
     this.resetScrollReference();
 
@@ -112,6 +112,6 @@ export default class MobileTab extends Component {
    * This prevents small, accumulated deltas from triggering visibility changes immediately after the user pauses and resumes scrolling.
    */
   private resetScrollReference = debounce(150, () => {
-    this.lastScrollTop = window.pageYOffset;
+    this.lastScrollTop = window.scrollY;
   });
 }

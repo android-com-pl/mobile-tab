@@ -23,7 +23,7 @@ return [
     (new Extend\Settings)
         ->default(MobileTabSettings::ITEMS, ['home', 'tags', 'notifications', 'session'])
         // This extender callback does not support container injection.
-        ->serializeToForum('acplMobileTabItems', MobileTabSettings::ITEMS,  resolve(MobileTabSettings::class)->decodeItems(...))
+        ->serializeToForum('acplMobileTabItems', MobileTabSettings::ITEMS, resolve(MobileTabSettings::class)->decodeItems(...))
         ->default(MobileTabSettings::HIDE_ON_SCROLL, true)
         ->serializeToForum('acplMobileTabHideOnScroll', MobileTabSettings::HIDE_ON_SCROLL, 'boolval')
         ->default(MobileTabSettings::SCROLL_THRESHOLD, 80)
@@ -39,7 +39,7 @@ return [
         ->fields(fn () => [
             Schema\Relationship\ToMany::make('custom-tab-items')
                 ->includable()
-                ->get(function ()  {
+                ->get(function () {
                     // This extender callback does not support container injection.
                     $activeItems = resolve(MobileTabSettings::class)->items();
 

@@ -6,7 +6,8 @@ use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 
-class MobileTabSettings {
+class MobileTabSettings
+{
     public const string ITEMS = 'acpl-mobile-tab.items';
     public const string HIDE_ON_SCROLL = 'acpl-mobile-tab.hide_on_scroll';
     public const string SCROLL_THRESHOLD = 'acpl-mobile-tab.scroll_threshold';

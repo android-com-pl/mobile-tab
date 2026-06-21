@@ -8,9 +8,6 @@ use Flarum\Api\Resource;
 use Flarum\Api\Schema;
 use Flarum\Extend;
 use Flarum\Frontend\Document;
-use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Support\Str;
-use Psr\Log\LoggerInterface;
 
 return [
     (new Extend\Frontend('admin'))
@@ -24,25 +21,13 @@ return [
     new Extend\Locales(__DIR__.'/locale'),
 
     (new Extend\Settings)
-        ->default('acpl-mobile-tab.items', ['home', 'tags', 'notifications', 'session'])
-        ->serializeToForum('acplMobileTabItems', 'acpl-mobile-tab.items', function ($value) {
-            if (is_string($value)) {
-                if (! Str::isJson($value)) {
-                    $logger = resolve(LoggerInterface::class);
-                    $logger->error('Invalid JSON in acpl-mobile-tab.items setting');
-
-                    return [];
-                }
-
-                return json_decode($value);
-            }
-
-            return $value;
-        })
-        ->default('acpl-mobile-tab.hide_on_scroll', true)
-        ->serializeToForum('acplMobileTabHideOnScroll', 'acpl-mobile-tab.hide_on_scroll', 'boolval')
-        ->default('acpl-mobile-tab.scroll_threshold', 80)
-        ->serializeToForum('acplMobileTabScrollThreshold', 'acpl-mobile-tab.scroll_threshold', 'intval'),
+        ->default(MobileTabSettings::ITEMS, ['home', 'tags', 'notifications', 'session'])
+        // This extender callback does not support container injection.
+        ->serializeToForum('acplMobileTabItems', MobileTabSettings::ITEMS,  resolve(MobileTabSettings::class)->decodeItems(...))
+        ->default(MobileTabSettings::HIDE_ON_SCROLL, true)
+        ->serializeToForum('acplMobileTabHideOnScroll', MobileTabSettings::HIDE_ON_SCROLL, 'boolval')
+        ->default(MobileTabSettings::SCROLL_THRESHOLD, 80)
+        ->serializeToForum('acplMobileTabScrollThreshold', MobileTabSettings::SCROLL_THRESHOLD, 'intval'),
 
     (new Extend\Frontend('forum'))
         ->content(function (Document $document) {
@@ -54,18 +39,9 @@ return [
         ->fields(fn () => [
             Schema\Relationship\ToMany::make('custom-tab-items')
                 ->includable()
-                ->get(function () {
-                    $settings = resolve(SettingsRepositoryInterface::class);
-                    $activeItems = $settings->get('acpl-mobile-tab.items');
-                    if (is_string($activeItems)) {
-                        if (! Str::isJson($activeItems)) {
-                            $logger = resolve(LoggerInterface::class);
-                            $logger->error('Invalid JSON in acpl-mobile-tab.items setting');
-
-                            return [];
-                        }
-                        $activeItems = json_decode($activeItems);
-                    }
+                ->get(function ()  {
+                    // This extender callback does not support container injection.
+                    $activeItems = resolve(MobileTabSettings::class)->items();
 
                     $customActiveItemIds = collect($activeItems)
                         ->filter(fn ($item) => str_starts_with($item, 'custom-'))

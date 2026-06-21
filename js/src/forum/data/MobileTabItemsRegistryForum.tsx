@@ -1,5 +1,6 @@
 import MobileTabItemsRegistry from '../../common/MobileTabItemsRegistry';
 import ForumMobileTabSessionItem from '../components/ForumMobileTabSessionItem';
+import ForumNewDiscussionItem from '../components/ForumNewDiscussionItem';
 import ForumSearchTabItem from '../components/ForumSearchTabItem';
 
 /**
@@ -15,6 +16,11 @@ import ForumSearchTabItem from '../components/ForumSearchTabItem';
 export default class MobileTabItemsRegistryForum extends MobileTabItemsRegistry {
   items() {
     const items = super.items();
+
+    items.setContent('new_discussion', {
+      ...items.get('new_discussion'),
+      forumComponent: ForumNewDiscussionItem,
+    });
 
     items.setContent('session', {
       ...items.get('session'),

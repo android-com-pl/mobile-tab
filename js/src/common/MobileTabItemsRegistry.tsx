@@ -22,6 +22,13 @@ export default class MobileTabItemsRegistry {
       source: 'core',
     });
 
+    itemList.add('new_discussion', {
+      icon: 'fas fa-edit',
+      label: app.translator.trans('acpl-mobile-tab.lib.item.new_discussion'),
+      canView: !!(app.session.user && app.forum.attribute<boolean>('canStartDiscussion')),
+      source: 'core',
+    });
+
     itemList.add('notifications', {
       icon: 'fas fa-bell',
       label: app.translator.trans('acpl-mobile-tab.lib.item.notifications'),

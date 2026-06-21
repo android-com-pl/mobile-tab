@@ -26,6 +26,7 @@ acpl-mobile-tab:
     item:
       home: "Home"
       all_discussions: "Discussions"
+      new_discussion: "New Discussion"
       categories: "Categories"
       notifications: "Notifications"
       session: "Session"

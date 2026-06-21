@@ -1,1 +1,5 @@
 @import "./components/MobileTab";
+
+.MobileTab:has(.MobileTab-items:empty) {
+  display: none;
+}

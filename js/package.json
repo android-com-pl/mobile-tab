@@ -3,24 +3,37 @@
   "private": true,
   "devDependencies": {
     "@flarum/prettier-config": "^1.0.0",
+    "@types/mithril": "^2.2.9",
     "@types/sortablejs": "^1.15.9",
     "flarum-tsconfig": "^2.0.0",
-    "flarum-webpack-config": "^3.0.3",
-    "prettier": "^3.8.1",
+    "flarum-webpack-config": "^3.0.4",
+    "prettier": "^3.9.6",
     "prettier-plugin-organize-imports": "^4.3.0",
-    "typescript": "^5.9.3",
-    "webpack": "^5.105.4",
-    "webpack-cli": "^7.0.2"
+    "typescript": "^7.0.2",
+    "webpack": "^5.109.2",
+    "webpack-cli": "^7.2.2"
   },
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
-    "analyze": "cross-env ANALYZER=true npm run build",
+    "analyze": "cross-env ANALYZER=true pnpm run build",
     "format": "prettier --write src ../less ../locale ../README.md",
     "format-check": "prettier --check src ../less ../locale",
-    "clean-typings": "npx rimraf dist-typings && mkdir dist-typings",
-    "build-typings": "npm run clean-typings && ([ -e src/@types ] && cp -r src/@types dist-typings/@types || true) && tsc && npm run post-build-typings",
+    "clean-typings": "pnx rimraf dist-typings && mkdir dist-typings",
+    "build-typings": "pnpm run clean-typings && ([ -e src/@types ] && cp -r src/@types dist-typings/@types || true) && tsc && pnpm run post-build-typings",
     "post-build-typings": "find dist-typings -type f -name '*.d.ts' -print0 | xargs -0 sed -i 's,../src/@types,@types,g'",
     "check-typings": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": ">=11.23.0 <12.0.0",
+      "onFail": "download"
+    },
+    "runtime": {
+      "name": "node",
+      "version": ">=24.18.0",
+      "onFail": "warn"
+    }
   }
 }

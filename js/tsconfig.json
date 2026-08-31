@@ -2,7 +2,7 @@
   "extends": "flarum-tsconfig",
   "include": ["src/**/*", "../vendor/*/*/js/dist-typings/@types/**/*", "@types/**/*"],
   "compilerOptions": {
-    "rootDir": "./src",
+    "rootDir": "./src/forum",
     "moduleResolution": "bundler",
     "declarationDir": "./dist-typings",
     "paths": {

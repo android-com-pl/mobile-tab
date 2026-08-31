@@ -33,7 +33,7 @@ export default class MobileTab extends Component {
         <MobileTabItem route={app.route('index')} icon="fas fa-comments" label={app.translator.trans('acpl-mobile-tab.forum.all_discussions')} />,
         90
       );
-    } else if ('askvortsov-categories' in flarum.extensions) {
+    } else if ('fof-categories' in flarum.extensions) {
       items.add(
         'categories',
         <MobileTabItem route={app.route('categories')} icon="fas fa-th-list" label={app.translator.trans('acpl-mobile-tab.forum.categories')} />,

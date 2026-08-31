@@ -2,8 +2,13 @@ name: Mobile tab JS
 
 on: [workflow_dispatch, push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   run:
+    permissions:
+      contents: write
     uses: flarum/framework/.github/workflows/REUSABLE_frontend.yml@1.x
     with:
       enable_bundlewatch: false

@@ -12,5 +12,5 @@ jobs:
 
       frontend_directory: ./js
       backend_directory: .
-      js_package_manager: npm
+      js_package_manager: pnpm
       main_git_branch: 1.x

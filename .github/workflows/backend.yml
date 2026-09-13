@@ -1,0 +1,13 @@
+name: Mobile Tab PHP
+
+on: [workflow_dispatch, push, pull_request]
+
+jobs:
+  run:
+    uses: flarum/framework/.github/workflows/REUSABLE_backend.yml@2.x
+    with:
+      enable_backend_testing: true
+      enable_phpstan: true
+      php_versions: '["8.3", "8.4", "8.5"]'
+
+      backend_directory: .

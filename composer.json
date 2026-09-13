@@ -1,9 +1,16 @@
 {
     "name": "acpl/mobile-tab",
+    "type": "flarum-extension",
+    "scripts": {
+        "analyse:phpstan": "phpstan analyse",
+        "clear-cache:phpstan": "phpstan clear-result-cache",
+        "test": "@test:integration",
+        "test:integration": "phpunit -c tests/phpunit.integration.xml",
+        "test:setup": "@php tests/integration/setup.php"
+    },
     "keywords": [
         "flarum"
     ],
-    "type": "flarum-extension",
     "license": "MIT",
     "support": {
         "issues": "https://github.com/android-com-pl/mobile-tab/issues",
@@ -25,6 +32,11 @@
             "Acpl\\MobileTab\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Acpl\\MobileTab\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "Rafał Całka",
@@ -34,10 +46,6 @@
     ],
     "minimum-stability": "beta",
     "prefer-stable": true,
-    "scripts": {
-        "analyse:phpstan": "phpstan analyse",
-        "clear-cache:phpstan": "phpstan clear-result-cache"
-    },
     "extra": {
         "flarum-extension": {
             "title": "Mobile tab",
@@ -70,6 +78,7 @@
         }
     },
     "require-dev": {
-        "flarum/phpstan": "^2.0@beta"
+        "flarum/phpstan": "^2.0.0",
+        "flarum/testing": "^2.0.0"
     }
 }

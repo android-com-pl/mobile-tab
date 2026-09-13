@@ -4,61 +4,120 @@ import FormSection from 'flarum/admin/components/FormSection';
 import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
 import Button from 'flarum/common/components/Button';
 import Form from 'flarum/common/components/Form';
+import LoadingIndicator from 'flarum/common/components/LoadingIndicator';
 import classList from 'flarum/common/utils/classList';
+import extractText from 'flarum/common/utils/extractText';
 import ItemList from 'flarum/common/utils/ItemList';
-import { Children, Vnode } from 'mithril';
+import { Children, Vnode, VnodeDOM } from 'mithril';
 import type Sortable from 'sortablejs';
 import CustomTabItem from '../../common/models/CustomTabItem';
+import MobileTabVariant from '../../common/models/MobileTabVariant';
 import { MobileTabItemDefinition } from '../../common/types';
 import MobileTabItemsRegistryAdmin from '../data/MobileTabItemsRegistryAdmin';
 import EditCustomTabItemModal from './EditCustomTabItemModal';
+import MobileTabVariantBox from './MobileTabVariantBox';
 
 export default class MobileTabSettingsPage extends ExtensionPage {
-  protected itemsSettingKey = 'acpl-mobile-tab.items';
-  protected sortableKey = 'acpl-mobile-tab';
-  protected sortableAvailableItems!: Sortable;
-  protected sortableEnabledItems!: Sortable;
-  /**
-   * Sortablejs directly manipulates the DOM, which can confuse Mithril's diffing.
-   * Changing this key forces a full re-render of the list, ensuring a clean sync.
-   */
-  protected forcedRefreshKey = 0;
+  protected variants: MobileTabVariant[] = [];
+  protected busy = false;
+  protected paletteKey = 0;
+  protected sortableAvailableItems?: Sortable;
+  protected sortableVariants?: Sortable;
+  protected sortableModule?: typeof Sortable;
+  protected loadFailed = false;
 
   oninit(vnode: Vnode<ExtensionPageAttrs, this>) {
     super.oninit(vnode);
-
-    this.loading = true;
-    app.store.find<CustomTabItem>('custom-tab-items').then(() => {
-      this.loading = false;
-      m.redraw();
-    });
+    void this.load();
   }
 
-  get activeKeys(): string[] {
-    const raw = this.setting(this.itemsSettingKey)();
-    if (Array.isArray(raw)) return raw;
-
+  async load() {
+    this.loading = true;
+    this.loadFailed = false;
     try {
-      return raw ? JSON.parse(raw) : [];
+      const [variants, , { default: sortableModule }] = await Promise.all([
+        app.store.find<MobileTabVariant[]>('mobile-tab-variants'),
+        this.loadCustomItems(),
+        import('flarum/admin/utils/loadSortable'),
+      ]);
+      this.variants = variants;
+      this.sortableModule = sortableModule;
     } catch {
-      return [];
+      this.loadFailed = true;
+    } finally {
+      this.loading = false;
+      m.redraw();
     }
   }
 
-  set activeKeys(value: string[]) {
-    this.setting(this.itemsSettingKey)(JSON.stringify(value));
+  async loadCustomItems() {
+    let offset = 0;
+    let more = true;
+    while (more) {
+      const page = await app.store.find<CustomTabItem[]>('custom-tab-items', { page: { offset, limit: 50 } });
+      offset += page.length;
+      more = !!page.payload.links?.next;
+    }
+  }
+
+  sections(vnode: VnodeDOM<ExtensionPageAttrs, this>) {
+    const sections = super.sections(vnode);
+    if (!app.registry.extensionHasPermissions(this.extension.id)) sections.remove('permissions');
+    return sections;
   }
 
   content() {
+    if (this.loading) return <LoadingIndicator />;
+    if (this.loadFailed)
+      return (
+        <Button className="Button" onclick={() => this.load()}>
+          {this.trans('retry')}
+        </Button>
+      );
+
     return (
       <div className="ExtensionPage-settings MobileTabSettingsPage">
-        <div className="container" key={this.forcedRefreshKey} oncreate={this.onListCreate.bind(this)}>
-          <FormSectionGroup>
+        <div className="container">
+          <p className="helpText">{this.trans('help')}</p>
+          <p className="helpText">{this.trans('permissions_help')}</p>
+          <p className="helpText">{this.trans('autosave')}</p>
+          <div className="MobileTabSettingsPage-layout">
             {this.availableItemsContent()}
-            {this.enabledItemsContent()}
+            <section className="MobileTabVariants" aria-label={extractText(this.trans('title'))}>
+              <h3>{this.trans('title')}</h3>
+              <div
+                className="MobileTabVariants-list"
+                oncreate={(vnode: VnodeDOM) => this.createVariantsSortable(vnode.dom as HTMLElement)}
+                onremove={() => this.sortableVariants?.destroy()}
+              >
+                {this.variants.map((variant, index) => (
+                  <MobileTabVariantBox
+                    key={variant.id()}
+                    model={variant}
+                    sortableModule={this.sortableModule!}
+                    disabled={this.busy}
+                    first={index === 0}
+                    last={index === this.variants.length - 1}
+                    itemContent={this.itemContent.bind(this)}
+                    onPaletteDrop={() => this.paletteKey++}
+                    onduplicate={() => this.createVariant(variant)}
+                    ondelete={() => this.deleteVariant(variant)}
+                    onmove={(delta: number) => this.moveVariant(index, index + delta)}
+                  />
+                ))}
+              </div>
+              {!this.variants.length && <p className="helpText">{this.trans('empty')}</p>}
+              <Button className="Button Button--primary" icon="fas fa-plus" disabled={this.busy} onclick={() => this.createVariant()}>
+                {this.trans('add')}
+              </Button>
+            </section>
+          </div>
+          <FormSectionGroup>
+            <FormSection label={this.trans('behavior')}>
+              {this.settingsContent()}
+              {this.submitButton()}
+            </FormSection>
           </FormSectionGroup>
-          {this.settingsContent()}
-          <FormSectionGroup>{this.submitButton()}</FormSectionGroup>
         </div>
       </div>
     );
@@ -85,52 +144,48 @@ export default class MobileTabSettingsPage extends ExtensionPage {
   availableItemsContent(): Children {
     return (
       <FormSection className="MobileTabAvailableItems" label={app.translator.trans('acpl-mobile-tab.admin.available_items')}>
-        <ul className="MobileTabAvailableItems-list MobileTab-items">
-          {this.availableItems()
-            .toArray()
-            .map((item) => (
-              <li className={`item-${item.itemName}`} key={item.itemName}>
-                {this.itemContent(item)}
-              </li>
-            ))}
-        </ul>
-        <Button className="Button" icon="fas fa-plus" onclick={() => app.modal.show(EditCustomTabItemModal)}>
-          {app.translator.trans('acpl-mobile-tab.admin.create_new_item_button')}
-        </Button>
-      </FormSection>
-    );
-  }
-
-  enabledItemsContent(): Children {
-    return (
-      <FormSection label={app.translator.trans('acpl-mobile-tab.admin.active_items')}>
-        <nav className="MobileTab MobileTabPreview">
-          <ul className="MobileTab-items MobileTabPreview-items">
-            {this.enabledItems()
+        <p className="helpText">{this.trans('palette_help')}</p>
+        <div>
+          <ul
+            className="MobileTabAvailableItems-list MobileTab-items"
+            key={this.paletteKey}
+            oncreate={(vnode: VnodeDOM) => {
+              this.sortableAvailableItems = this.sortableModule!.create(vnode.dom as HTMLElement, {
+                group: { name: 'acpl-mobile-tab-items', pull: 'clone', put: false },
+                animation: 150,
+                sort: false,
+              });
+            }}
+            onbeforeremove={() => this.sortableAvailableItems?.destroy()}
+          >
+            {this.availableItems()
               .toArray()
               .map((item) => (
-                <li className={`item-${item.itemName}`} key={item.itemName}>
+                <li className={`item-${item.itemName}`} data-item-key={item.itemName} key={item.itemName}>
                   {this.itemContent(item)}
                 </li>
               ))}
           </ul>
-        </nav>
+        </div>
+        <Button className="Button" icon="fas fa-plus" onclick={() => app.modal.show(EditCustomTabItemModal)}>
+          {app.translator.trans('acpl-mobile-tab.admin.create_new_item_button')}
+        </Button>
+        <p className="helpText">{this.trans('shared_items_help')}</p>
       </FormSection>
     );
   }
 
   itemContent(item: ReturnType<ItemList<MobileTabItemDefinition>['toArray']>[number]): Children {
-    const source = item.source ?? 'extension';
-
     return (
       <Button
-        className={classList('Button', { 'Button--dashed': source !== 'user' }, 'MobileTab-item', { 'MobileTab-item--editable': source === 'user' })}
+        className={classList('Button', { 'Button--dashed': item.source !== 'user' }, 'MobileTab-item', {
+          'MobileTab-item--editable': item.source === 'user',
+        })}
         icon={item.icon}
         onclick={() => {
           if (item.source === 'user') {
             const id = item.itemName.match(/(\d+)$/);
-            if (!id) return;
-            app.modal.show(EditCustomTabItemModal, { model: app.store.getById('custom-tab-items', id[0]) });
+            if (id) app.modal.show(EditCustomTabItemModal, { model: app.store.getById('custom-tab-items', id[0]) });
           }
         }}
       >
@@ -140,80 +195,81 @@ export default class MobileTabSettingsPage extends ExtensionPage {
   }
 
   availableItems() {
-    const registeredItems = new MobileTabItemsRegistryAdmin().items();
-
-    this.activeKeys.forEach((key: string) => {
-      if (registeredItems.has(key)) registeredItems.remove(key);
-    });
-
-    return registeredItems;
+    return new MobileTabItemsRegistryAdmin().items();
   }
 
-  enabledItems() {
-    const registeredItems = new MobileTabItemsRegistryAdmin().items();
-    const enabledItems = new ItemList<MobileTabItemDefinition>();
-
-    this.activeKeys.forEach((key: string) => {
-      if (registeredItems.has(key)) {
-        enabledItems.add(key, registeredItems.get(key));
-      }
-    });
-
-    return enabledItems;
-  }
-
-  getSortableItemKey(event: Sortable.SortableEvent) {
-    const element = event.item;
-    const match = Array.from(element.classList).find((className) => className.startsWith('item-'));
-    if (!match) return;
-    return match.replace('item-', '');
-  }
-
-  async onListCreate() {
-    const { default: sortableModule }: { default: typeof Sortable } = await import('flarum/admin/utils/loadSortable');
-
-    this.sortableAvailableItems = sortableModule.create(this.element.querySelector('.MobileTabAvailableItems-list')!, {
-      group: this.sortableKey,
+  createVariantsSortable(element: HTMLElement) {
+    this.sortableVariants = this.sortableModule!.create(element, {
       animation: 150,
-      sort: false,
-    });
-
-    this.sortableEnabledItems = sortableModule.create(this.element.querySelector('.MobileTabPreview-items')!, {
-      group: this.sortableKey,
-      animation: 120,
-      onAdd: (event) => {
-        if (event.newIndex == null) return;
-
-        const key = this.getSortableItemKey(event);
-        if (!key) return;
-
-        const activeKeys = [...this.activeKeys];
-        activeKeys.splice(event.newIndex, 0, key);
-
-        this.activeKeys = activeKeys;
-        this.forcedRefreshKey++;
-        m.redraw();
-      },
-      onSort: (event) => {
-        if (event.oldIndex == null || event.newIndex == null) return;
-        if (event.oldIndex === event.newIndex) return;
-        if (event.from !== event.to) return;
-
-        const current = [...this.activeKeys];
-
-        const [moved] = current.splice(event.oldIndex, 1);
-        current.splice(event.newIndex, 0, moved);
-
-        this.activeKeys = current;
-        m.redraw();
-      },
-      onRemove: (event) => {
-        const key = this.getSortableItemKey(event);
-        const activeKeys = [...this.activeKeys];
-        this.activeKeys = activeKeys.filter((item) => item !== key);
-        this.forcedRefreshKey++;
-        m.redraw();
+      handle: '.MobileTabVariantBox-handle',
+      draggable: '.MobileTabVariantBox',
+      onEnd: (event) => {
+        if (event.oldIndex == null || event.newIndex == null || event.oldIndex === event.newIndex) return;
+        // Restore Mithril's DOM before changing the keyed model list.
+        event.item.remove();
+        event.from.insertBefore(event.item, event.from.children[event.oldIndex] ?? null);
+        void this.moveVariant(event.oldIndex, event.newIndex);
       },
     });
+  }
+
+  async moveVariant(from: number, to: number) {
+    if (this.busy || to < 0 || to >= this.variants.length) return;
+    const previous = [...this.variants];
+    const next = [...previous];
+    next.splice(to, 0, next.splice(from, 1)[0]);
+    this.variants = next;
+    this.busy = true;
+    this.sortableVariants?.option('disabled', true);
+    m.redraw();
+    try {
+      await app.request({
+        method: 'POST',
+        url: app.forum.attribute('apiUrl') + '/mobile-tab-variants/order',
+        body: { order: next.map((v) => v.id()) },
+      });
+      next.forEach((variant, position) => variant.pushAttributes({ position }));
+    } catch {
+      this.variants = previous;
+    } finally {
+      this.busy = false;
+      this.sortableVariants?.option('disabled', false);
+      m.redraw();
+    }
+  }
+
+  async createVariant(source?: MobileTabVariant) {
+    this.busy = true;
+    try {
+      const variant = await app.store.createRecord<MobileTabVariant>('mobile-tab-variants').save({
+        name: extractText(source ? this.trans('copy_name', { name: source.name() }) : this.trans('new_name')),
+        items: source ? [...source.items()] : [],
+        isEnabled: false,
+      });
+      this.variants.push(variant);
+    } catch {
+      // Flarum displays the API error; keep the existing boxes available.
+    } finally {
+      this.busy = false;
+      m.redraw();
+    }
+  }
+
+  async deleteVariant(variant: MobileTabVariant) {
+    if (!confirm(extractText(this.trans('delete_confirmation', { name: variant.name() })))) return;
+    this.busy = true;
+    try {
+      await variant.delete();
+      this.variants = this.variants.filter((item) => item !== variant);
+    } catch {
+      // Keep the box when deletion fails.
+    } finally {
+      this.busy = false;
+      m.redraw();
+    }
+  }
+
+  trans(key: string, parameters = {}) {
+    return app.translator.trans(`acpl-mobile-tab.admin.variants.${key}`, parameters);
   }
 }

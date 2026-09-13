@@ -2,7 +2,7 @@
 
 namespace Acpl\MobileTab;
 
-use Flarum\Settings\SettingsRepositoryInterface;
+use Flarum\User\User;
 use Illuminate\Support\Str;
 use Psr\Log\LoggerInterface;
 
@@ -13,14 +13,16 @@ class MobileTabSettings
     public const string SCROLL_THRESHOLD = 'acpl-mobile-tab.scroll_threshold';
 
     public function __construct(
-        private readonly SettingsRepositoryInterface $settings,
         private readonly LoggerInterface $logger
     ) {
     }
 
-    public function items(): array
+    public function items(?User $actor = null): array
     {
-        return $this->decodeItems($this->settings->get(self::ITEMS));
+        return MobileTabVariant::query()
+            ->whereVisibleTo($actor ?? new User)
+            ->orderBy('position')->orderBy('id')
+            ->first()->items ?? [];
     }
 
     public function decodeItems(mixed $value): array

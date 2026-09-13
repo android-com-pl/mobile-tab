@@ -1,8 +1,93 @@
 @import "./components/MobileTab";
 
 .MobileTabSettingsPage {
+  &-layout {
+    display: grid;
+    grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 32px;
+
+    @media @phone {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
   > .container > .FormSectionGroup > .FormSection {
     margin-bottom: 1.8rem;
+  }
+}
+
+.MobileTabVariantBox {
+  border: 1px solid var(--control-bg);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  margin-bottom: 16px;
+  background: var(--body-bg);
+
+  &--disabled {
+    border-style: dashed;
+    background: var(--control-bg);
+  }
+
+  &-header,
+  &-footer,
+  &-actions,
+  &-permissions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &-header {
+    margin-bottom: 16px;
+  }
+  &-footer {
+    margin-top: 12px;
+  }
+  &-footer > select {
+    width: auto;
+    max-width: 100%;
+  }
+  &-name {
+    flex: 1;
+    min-width: 140px;
+    width: auto;
+  }
+  &-actions {
+    margin-left: auto;
+  }
+  &-permissions {
+    color: var(--muted-color);
+  }
+  &-handle {
+    cursor: grab;
+    padding: 8px;
+    color: var(--muted-color);
+    touch-action: none;
+  }
+  &-itemActions {
+    display: flex;
+    justify-content: center;
+  }
+  &-itemActions .Button {
+    padding: 4px 8px;
+  }
+  &-missing {
+    display: block;
+    padding: 8px;
+    color: var(--muted-color);
+    overflow-wrap: anywhere;
+  }
+
+  .MobileTabPreview-items {
+    min-height: 76px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .MobileTabPreview-items > li {
+    flex: 0 1 auto;
+    min-width: 80px;
   }
 }
 
@@ -21,6 +106,8 @@
 
 .MobileTabPreview {
   position: static;
+  height: auto;
+  min-height: var(--mobile-tab-height);
 
   @media @tablet-up {
     display: block;

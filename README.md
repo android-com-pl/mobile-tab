@@ -22,6 +22,32 @@ php flarum migrate
 php flarum cache:clear
 ```
 
+## Menu variants
+
+Create multiple menus on the extension settings page. Each box has its own items,
+enabled switch, and native Flarum permission dropdown. Drag boxes to set priority:
+the first enabled menu visible to the visitor wins. Keep a menu for **Everyone**
+last as a fallback. If no menu matches, or the selected menu is empty, no bar is shown.
+
+Administrators can access every menu, and multiple selected groups mean **any** of
+those groups. A dedicated administrator menu should therefore go first.
+New and duplicated menus start disabled with administrator-only access; configure
+their permissions and position before enabling them.
+
+The available items palette is shared. Dragging copies an item into a menu;
+duplicates within that menu are prevented. Custom links are shared across menus,
+so editing or deleting a link affects every menu using it. Unavailable extension
+items remain in their saved positions until their extension is enabled again.
+
+Menu changes save automatically. Scroll settings remain global and use their own
+Save button. Updating automatically migrates the existing menu into an enabled
+**Default** variant accessible to everyone, preserving item order and custom links.
+
+The item registries and the forum's `acplMobileTabItems` attribute retain their
+existing format. The backend supplies only the selected menu and its custom items.
+The legacy `acpl-mobile-tab.items` setting is migrated to variant records and is no
+longer used to configure menus.
+
 ## Extending
 
 > [!IMPORTANT]  

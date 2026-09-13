@@ -35,6 +35,7 @@
     "minimum-stability": "beta",
     "prefer-stable": true,
     "scripts": {
+        "test": "phpunit -c tests/phpunit.integration.xml",
         "analyse:phpstan": "phpstan analyse",
         "clear-cache:phpstan": "phpstan clear-result-cache"
     },
@@ -70,6 +71,7 @@
         }
     },
     "require-dev": {
-        "flarum/phpstan": "^2.0@beta"
+        "flarum/phpstan": "^2.0@beta",
+        "flarum/testing": "^2.0@dev"
     }
 }

@@ -27,28 +27,29 @@ export default class MobileTab extends Component {
   }
 
   view(vnode: Vnode<ComponentAttrs, this>): Children {
+    const items = this.items()
+      .toArray()
+      .filter(({ canView }) => (typeof canView === 'function' ? canView() : (canView ?? true)));
+
     return (
-      <nav className="MobileTab">
+      <nav className="MobileTab" hidden={!items.length}>
         <ul className="MobileTab-items">
-          {this.items()
-            .toArray()
-            .filter(({ canView }) => (typeof canView === 'function' ? canView() : (canView ?? true)))
-            .map((item) => (
-              <li key={item.itemName}>
-                {item.forumComponent ? (
-                  m(item.forumComponent, { definition: item })
-                ) : (
-                  <MobileTabItem
-                    href={typeof item.href === 'function' ? item.href() : item.href}
-                    icon={item.icon}
-                    target={item.isNewTab ? '_blank' : undefined}
-                    external={item.isInternal === undefined ? false : !item.isInternal}
-                  >
-                    {item.label}
-                  </MobileTabItem>
-                )}
-              </li>
-            ))}
+          {items.map((item) => (
+            <li key={item.itemName}>
+              {item.forumComponent ? (
+                m(item.forumComponent, { definition: item })
+              ) : (
+                <MobileTabItem
+                  href={typeof item.href === 'function' ? item.href() : item.href}
+                  icon={item.icon}
+                  target={item.isNewTab ? '_blank' : undefined}
+                  external={item.isInternal === undefined ? false : !item.isInternal}
+                >
+                  {item.label}
+                </MobileTabItem>
+              )}
+            </li>
+          ))}
         </ul>
       </nav>
     );
@@ -57,7 +58,7 @@ export default class MobileTab extends Component {
   items() {
     const registeredItems = new MobileTabItemsRegistryForum().items();
 
-    const settings = app.forum.attribute<string[]>('acplMobileTabItems');
+    const settings = app.forum.attribute<string[]>('acplMobileTabItems') ?? [];
     const items = new ItemList<MobileTabItemDefinition>();
     settings.forEach((item: string) => {
       if (registeredItems.has(item)) {

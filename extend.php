@@ -57,4 +57,9 @@ return [
     ->endpoint(Endpoint\Show::class, function (Endpoint\Show $endpoint) {
         return $endpoint->addDefaultInclude(['custom-tab-items']);
     }),
+
+    (new Extend\Conditional())
+        ->whenExtensionEnabled('ramon-chat', fn() => [
+            (new Extend\Frontend('forum'))->css(__DIR__ . '/less/integrations/ramon-chat.less')
+        ])
 ];

@@ -57,7 +57,10 @@
             }
         },
         "optional-dependencies": [
-            "flarum/tags"
+            "flarum/tags",
+            "flarum/messages",
+            "fof/byobu",
+            "ramon/chat"
         ],
         "flarum-cli": {
             "modules": {

@@ -1,0 +1,7 @@
+@media @phone {
+  body:has(.MobileTab:not(.MobileTab--hidden)) {
+    .ChatPage {
+      height: calc(100dvh - var(--header-height-phone, 46px) - var(--mobile-tab-height, 0));
+    }
+  }
+}

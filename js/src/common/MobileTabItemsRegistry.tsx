@@ -31,6 +31,7 @@ export default class MobileTabItemsRegistry {
 
     itemList.add('notifications', {
       icon: 'fas fa-bell',
+      href: () => app.route('notifications'),
       label: app.translator.trans('acpl-mobile-tab.lib.item.notifications'),
       canView: !!app.session.user,
       forumComponent: ForumNotificationsTabItem,
@@ -74,6 +75,16 @@ export default class MobileTabItemsRegistry {
         href: () => app.route('byobuPrivate'),
         label: app.translator.trans('acpl-mobile-tab.lib.item.fof-byobu'),
         canView: !!app.session.user,
+        source: 'core',
+      });
+    }
+
+    if ('ramon-chat' in flarum.extensions) {
+      itemList.add('ramon-chat', {
+        icon: app.forum.attribute<string>('ramon-chat.icon') || 'fas fa-comments',
+        href: () => app.route('chat.index'),
+        label: app.forum.attribute<string>('ramon-chat.title') || app.translator.trans('acpl-mobile-tab.lib.item.ramon-chat'),
+        canView: !!app.session.user && app.forum.attribute<boolean>('canUseChat'),
         source: 'core',
       });
     }

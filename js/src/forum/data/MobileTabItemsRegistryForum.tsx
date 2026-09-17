@@ -2,6 +2,7 @@ import MobileTabItemsRegistry from '../../common/MobileTabItemsRegistry';
 import ForumMobileTabSessionItem from '../components/ForumMobileTabSessionItem';
 import ForumNewDiscussionItem from '../components/ForumNewDiscussionItem';
 import ForumSearchTabItem from '../components/ForumSearchTabItem';
+import ForumChatTabItem from '../components/integrations/ForumChatTabItem';
 
 /**
  * Extends the base `MobileTabItemsRegistry` to safely add forum-specific logic.
@@ -31,6 +32,13 @@ export default class MobileTabItemsRegistryForum extends MobileTabItemsRegistry 
       ...items.get('search'),
       forumComponent: ForumSearchTabItem,
     });
+
+    if (items.has('ramon-chat')) {
+      items.setContent('ramon-chat', {
+        ...items.get('ramon-chat'),
+        forumComponent: ForumChatTabItem,
+      });
+    }
 
     return items;
   }

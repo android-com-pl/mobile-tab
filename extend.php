@@ -43,7 +43,7 @@ return [
     (new Extend\ApiResource(Resource\ForumResource::class))
         ->fields(fn () => [
             Schema\Arr::make('acplMobileTabItems')
-                ->get(fn(object $forum, Context $context): array => resolve(MobileTabResolver::class)
+                ->get(fn (object $forum, Context $context): array => resolve(MobileTabResolver::class)
                     ->forActor($context->getActor())
                     ?->items ?? []),
             Schema\Relationship\ToMany::make('custom-tab-items')

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Acpl\MobileTab\Api\Resource;
 
 use Acpl\MobileTab\MobileTabVariant;
@@ -78,6 +77,7 @@ class MobileTabVariantResource extends AbstractDatabaseResource
     public function creating(object $model, Context $context): ?object
     {
         $model->position = (MobileTabVariant::max('position') ?? -1) + 1;
+
         return $model;
     }
 }

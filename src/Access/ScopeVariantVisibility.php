@@ -19,7 +19,7 @@ class ScopeVariantVisibility
 
         foreach ($actor->getPermissions() as $permission) {
             if (preg_match('/^acpl-mobile-tab\.variant(\d+)\.view$/', $permission, $matches)) {
-                $ids[] = (int)$matches[1];
+                $ids[] = (int) $matches[1];
             }
         }
 

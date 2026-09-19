@@ -53,6 +53,7 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
         <nav className="MobileTab MobileTabPreview">
           <ul
             className="MobileTab-items MobileTabPreview-items"
+            data-empty-help={extractText(app.translator.trans('acpl-mobile-tab.admin.variants.empty_help'))}
             oncreate={(vnode) => this.createSortable(vnode.dom as HTMLElement)}
             onremove={() => this.sortable?.destroy()}
           >

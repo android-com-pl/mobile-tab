@@ -74,5 +74,19 @@
   .MobileTabPreview {
     box-shadow: none;
     padding-inline: 6px;
+
+    &-items {
+      position: relative;
+
+      &:empty::before {
+        content: attr(data-empty-help);
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: var(--muted-color);
+        font-size: 12px;
+      }
+    }
   }
 }

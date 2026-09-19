@@ -86,7 +86,10 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
     this.sortable = sortableModule.create(element, {
       group: {
         name: 'mobile-tab-items',
-        put: (_to, _from, item) => !this.attrs.variant.items().includes(item.dataset.id!),
+        put: (_to, _from, item) => {
+          const id = item.dataset.id;
+          return id !== undefined && !this.attrs.variant.items().includes(id);
+        },
       },
       animation: 120,
       onEnd: this.attrs.onSortEnd,
@@ -138,11 +141,12 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
     });
   }
 
-  deleteVariant() {
+  async deleteVariant() {
     if (!confirm(extractText(app.translator.trans('acpl-mobile-tab.admin.variants.delete_confirmation')))) {
       return;
     }
 
-    void this.attrs.variant.delete();
+    await this.attrs.variant.delete();
+    m.redraw();
   }
 }

@@ -151,7 +151,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     this.sortableVariants = sortableModule.create(vnode.dom as HTMLElement, {
       animation: 150,
       handle: '.MobileTabVariant-handle',
-      group: 'mobile-tab-variants',
+      draggable: '.MobileTabVariant',
       onEnd: this.refreshLists.bind(this),
 
       onUpdate: (event) => {

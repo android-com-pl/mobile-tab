@@ -45,5 +45,6 @@ acpl-mobile-tab:
       profile: "Profile"
       tags: "Tags"
       messages: "Messages"
+      flags: "Flags"
       fof-byobu: "Private"
       ramon-chat: "Chat"

@@ -7,6 +7,7 @@ export interface MobileTabItemAttrs extends IButtonAttrs {
   href: string;
   target?: string;
   external?: boolean;
+  counter?: () => number;
 }
 
 export default class MobileTabItem extends Component<MobileTabItemAttrs> {
@@ -19,6 +20,7 @@ export default class MobileTabItem extends Component<MobileTabItemAttrs> {
         target={this.attrs.target}
         external={this.attrs.external ?? false}
       >
+        {this.attrs.counter ? <span className="Bubble">{this.attrs.counter}</span> : ''}
         {vnode.children}
       </LinkButton>
     );

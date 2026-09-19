@@ -53,6 +53,7 @@ export default () => {
       label: app.translator.trans("my-ext.forum.index.following_label"),
       href: () => app.route("following"),
       canView: () => !!app.session.user,
+      counter: () => app.forum.attribute('myCount'),
       source: "extension",
     });
 

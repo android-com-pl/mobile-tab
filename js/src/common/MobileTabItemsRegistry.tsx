@@ -1,7 +1,6 @@
 import app from 'flarum/common/app';
 import ItemList from 'flarum/common/utils/ItemList';
 import CustomTabItem from '../common/models/CustomTabItem';
-import ForumNotificationsTabItem from '../forum/components/ForumNotificationsTabItem';
 import { MobileTabItemDefinition } from './types';
 
 export default class MobileTabItemsRegistry {
@@ -34,7 +33,7 @@ export default class MobileTabItemsRegistry {
       href: () => app.route('notifications'),
       label: app.translator.trans('acpl-mobile-tab.lib.item.notifications'),
       canView: !!app.session.user,
-      forumComponent: ForumNotificationsTabItem,
+      counter: () => app.session.user!.unreadNotificationCount() || null,
       source: 'core',
     });
 
@@ -65,6 +64,17 @@ export default class MobileTabItemsRegistry {
         href: () => app.route('messages'),
         label: app.translator.trans('acpl-mobile-tab.lib.item.messages'),
         canView: !!app.session.user,
+        source: 'core',
+      });
+    }
+
+    if ('flarum-flags' in flarum.extensions) {
+      itemList.add('flags', {
+        icon: 'fas fa-flag',
+        href: () => app.route('flags'),
+        label: app.translator.trans('acpl-mobile-tab.lib.item.flags'),
+        canView: !!app.session.user && app.forum.attribute<boolean>('canViewFlags'),
+        counter: () => app.forum.attribute<number>('flagCount'),
         source: 'core',
       });
     }

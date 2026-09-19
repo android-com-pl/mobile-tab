@@ -2,7 +2,8 @@ import MobileTabItemsRegistry from '../../common/MobileTabItemsRegistry';
 import ForumMobileTabSessionItem from '../components/ForumMobileTabSessionItem';
 import ForumNewDiscussionItem from '../components/ForumNewDiscussionItem';
 import ForumSearchTabItem from '../components/ForumSearchTabItem';
-import ForumChatTabItem from '../components/integrations/ForumChatTabItem';
+// @ts-ignore - missing dist-typings in ramon/chat
+import ChatState from 'ext:ramon/chat/forum/state/chat';
 
 /**
  * Extends the base `MobileTabItemsRegistry` to safely add forum-specific logic.
@@ -36,7 +37,14 @@ export default class MobileTabItemsRegistryForum extends MobileTabItemsRegistry 
     if (items.has('ramon-chat')) {
       items.setContent('ramon-chat', {
         ...items.get('ramon-chat'),
-        forumComponent: ForumChatTabItem,
+        counter: () => {
+          try {
+            const { messages, mentions } = ChatState.unreadSummary();
+            return mentions > 0 ? mentions : messages;
+          } catch {
+            return null;
+          }
+        },
       });
     }
 

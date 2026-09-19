@@ -1,0 +1,78 @@
+.MobileTabVariants {
+  max-width: 760px;
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+  }
+
+  &-add {
+    margin-top: 16px;
+  }
+}
+
+.MobileTabVariant {
+  border: 1px solid var(--control-bg);
+  border-radius: var(--border-radius);
+  background: var(--body-bg);
+
+  &-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--control-bg);
+  }
+
+  &-handle {
+    flex-shrink: 0;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &-title {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  &-enabled {
+    margin-left: 8px;
+
+    .Switch {
+      margin: 0;
+    }
+  }
+
+  &-permission {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  &-controlLabel {
+    color: var(--muted-color);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  &-delete {
+    flex-shrink: 0;
+    color: var(--muted-color);
+
+    &:hover {
+      color: var(--error-color);
+    }
+  }
+
+  .MobileTabPreview {
+    box-shadow: none;
+    padding-inline: 6px;
+  }
+}

@@ -1,4 +1,5 @@
 @import "./components/MobileTab";
+@import "./admin/components/MobileTabVariants";
 
 .MobileTabSettingsPage {
   > .container > .FormSectionGroup > .FormSection {
@@ -13,6 +14,8 @@
 
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  height: auto;
+  margin-block: 1rem;
 
   > li {
     flex-basis: 33%;
@@ -33,7 +36,11 @@
 
 .MobileTab-item {
   &:not(&--editable) {
-    cursor: move;
+    cursor: grab;
+
+    &:active{
+      cursor: grabbing;
+    }
   }
 }
 

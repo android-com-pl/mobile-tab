@@ -43,6 +43,7 @@ export default class MobileTab extends Component {
                     icon={item.icon}
                     target={item.isNewTab ? '_blank' : undefined}
                     external={item.isInternal === undefined ? false : !item.isInternal}
+                    counter={item.counter?.()}
                   >
                     {item.label}
                   </MobileTabItem>

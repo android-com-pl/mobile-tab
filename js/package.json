@@ -7,10 +7,10 @@
     "@types/sortablejs": "^1.15.9",
     "flarum-tsconfig": "^2.0.0",
     "flarum-webpack-config": "^3.0.4",
-    "prettier": "^3.9.6",
+    "prettier": "^3.9.8",
     "prettier-plugin-organize-imports": "^4.3.0",
     "typescript": "^7.0.2",
-    "webpack": "^5.110.3",
+    "webpack": "^5.111.1",
     "webpack-cli": "^7.2.3"
   },
   "scripts": {

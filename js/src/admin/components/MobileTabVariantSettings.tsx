@@ -10,16 +10,17 @@ import MobileTabItemsRegistryAdmin from '../data/MobileTabItemsRegistryAdmin';
 import type Sortable from 'sortablejs';
 import extractText from 'flarum/common/utils/extractText';
 
-interface MobileTabVariantAttrs extends ComponentAttrs {
+interface MobileTabVariantSettingsAttrs extends ComponentAttrs {
   variant: MobileTabVariant;
+  index: number;
   onSortEnd: () => void;
 }
 
-export default class MobileTabVariantSettings extends Component<MobileTabVariantAttrs> {
+export default class MobileTabVariantSettings extends Component<MobileTabVariantSettingsAttrs> {
   protected sortable?: Sortable;
 
-  view(vnode: Mithril.Vnode<MobileTabVariantAttrs, this>): Mithril.Children {
-    const { variant } = this.attrs;
+  view(vnode: Mithril.Vnode<MobileTabVariantSettingsAttrs, this>): Mithril.Children {
+    const { variant, index } = this.attrs;
     const items = this.enabledItems();
 
     return (
@@ -30,6 +31,12 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
             icon="fas fa-grip-vertical"
             title={app.translator.trans('acpl-mobile-tab.admin.variants.reorder')}
           />
+
+          <span className="MobileTabVariant-number">
+            {app.translator.trans('acpl-mobile-tab.admin.variants.number', {
+              number: this.attrs.index + 1,
+            })}
+          </span>
 
           <div className="MobileTabVariant-enabled">
             <Switch state={variant.is_enabled()} onchange={(is_enabled: boolean) => variant.save({ is_enabled })}>

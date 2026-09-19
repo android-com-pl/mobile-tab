@@ -1,24 +1,37 @@
 @import "./components/MobileTab";
 @import "./admin/components/MobileTabVariants";
 
-.MobileTabSettingsPage {
-  > .container > .FormSectionGroup > .FormSection {
-    margin-bottom: 1.8rem;
+.acpl-mobile-tab-Page {
+  .FormSectionGroup {
+    row-gap: 1rem;
   }
 }
 
-.MobileTabAvailableItems-list {
-  list-style: none;
-  padding-left: 0;
-  gap: 1em;
+.MobileTabAvailableItems,
+.MobileTabVariants {
+  .FormSection-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
 
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
-  height: auto;
-  margin-block: 1rem;
+.MobileTabAvailableItems {
+  &-list {
+    flex: 1;
+    align-content: start;
 
-  > li {
-    flex-basis: 33%;
+    list-style: none;
+    padding-left: 0;
+    gap: 1em;
+    margin: 0;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+
+    > li {
+      flex-basis: 33%;
+    }
   }
 }
 
@@ -38,7 +51,7 @@
   &:not(&--editable) {
     cursor: grab;
 
-    &:active{
+    &:active {
       cursor: grabbing;
     }
   }

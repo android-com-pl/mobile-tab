@@ -3,15 +3,15 @@ import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/Exten
 import FormSection from 'flarum/admin/components/FormSection';
 import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
 import Button from 'flarum/common/components/Button';
-import Form from 'flarum/common/components/Form';
-import { Children, Vnode, VnodeDOM } from 'mithril';
+import Mithril, { Children, Vnode, VnodeDOM } from 'mithril';
 import type Sortable from 'sortablejs';
-import CustomTabItem from '../../common/models/CustomTabItem';
+import type CustomTabItem from '../../common/models/CustomTabItem';
 import MobileTabItemsRegistryAdmin from '../data/MobileTabItemsRegistryAdmin';
 import EditCustomTabItemModal from './EditCustomTabItemModal';
-import MobileTabVariant from '../../common/models/MobileTabVariant';
+import type MobileTabVariant from '../../common/models/MobileTabVariant';
 import MobileTabVariantSettings from './MobileTabVariantSettings';
 import MobileTabItem from './MobileTabItem';
+import ItemList from 'flarum/common/utils/ItemList';
 
 export default class MobileTabSettingsPage extends ExtensionPage {
   protected sortableAvailableItems!: Sortable;
@@ -36,36 +36,24 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     });
   }
 
-  content() {
-    return (
-      <div className="ExtensionPage-settings MobileTabSettingsPage">
-        <div className="container" key={this.forcedRefreshKey}>
-          <FormSectionGroup>
-            {this.availableItemsContent()}
-            {this.variantsContent()}
-          </FormSectionGroup>
-          {this.settingsContent()}
-          <FormSectionGroup>{this.submitButton()}</FormSectionGroup>
-        </div>
-      </div>
-    );
+  sections(vnode: Mithril.VnodeDOM<ExtensionPageAttrs, this>): ItemList<unknown> {
+    const items = super.sections(vnode);
+
+    items.add('items', this.items(), 30);
+
+    return items;
   }
 
-  settingsContent(): Children {
+  items() {
     return (
-      <Form>
-        {this.buildSettingComponent({
-          type: 'boolean',
-          setting: 'acpl-mobile-tab.hide_on_scroll',
-          label: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.toggle_label'),
-        })}
-        {this.buildSettingComponent({
-          type: 'number',
-          setting: 'acpl-mobile-tab.scroll_threshold',
-          label: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.threshold_label'),
-          help: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.threshold_help'),
-        })}
-      </Form>
+      <div className="ExtensionPage-settings">
+        <div className="container" key={this.forcedRefreshKey}>
+          <FormSectionGroup>
+            {this.variantsContent()}
+            {this.availableItemsContent()}
+          </FormSectionGroup>
+        </div>
+      </div>
     );
   }
 
@@ -101,8 +89,8 @@ export default class MobileTabSettingsPage extends ExtensionPage {
         <ul className="MobileTabVariants-list" oncreate={this.createVariantsSortable.bind(this)} onremove={() => this.sortableVariants?.destroy()}>
           {[...app.store.all<MobileTabVariant>('mobile-tab-variants')]
             .sort((a, b) => a.position() - b.position())
-            .map((variant) => (
-              <MobileTabVariantSettings key={variant.id()} variant={variant} onSortEnd={this.refreshLists.bind(this)} />
+            .map((variant, index) => (
+              <MobileTabVariantSettings key={variant.id()} variant={variant} index={index} onSortEnd={this.refreshLists.bind(this)} />
             ))}
         </ul>
 

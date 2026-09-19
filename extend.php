@@ -45,7 +45,7 @@ return [
             Schema\Arr::make('acplMobileTabItems')
                 ->get(fn (object $forum, Context $context): array => resolve(MobileTabResolver::class)
                     ->forActor($context->getActor())
-                    ?->items ?? []),
+                    ->items ?? []),
             Schema\Relationship\ToMany::make('custom-tab-items')
                 ->includable()
                 ->get(function (object $forum, Context $context): array {
@@ -57,7 +57,7 @@ return [
                     }
 
                     $customActiveItemIds = collect($variant->items)
-                        ->filter(fn (string $item) => str_starts_with($item, 'custom-'))
+                        ->filter(fn ($item) => is_string($item) && str_starts_with($item, 'custom-'))
                         ->map(fn (string $item) => substr($item, 7));
 
                     if ($customActiveItemIds->isEmpty()) {

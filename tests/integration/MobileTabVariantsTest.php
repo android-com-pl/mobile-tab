@@ -58,12 +58,20 @@ class MobileTabVariantsTest extends TestCase
             ]);
         }
 
+        $this->database()->enableQueryLog();
+        $this->database()->flushQueryLog();
+
         $response = $this->send($this->request('GET', '/api', ['authenticatedAs' => $actorId]));
 
         $this->assertSame(200, $response->getStatusCode());
         $body = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame($expectedItems, $body['data']['attributes']['acplMobileTabItems']);
         $this->assertSame([], $body['data']['relationships']['custom-tab-items']['data']);
+        $this->assertCount(1, array_filter(
+            $this->database()->getQueryLog(),
+            fn (array $query) => str_contains($query['query'], 'mobile_tab_variants')
+                && str_starts_with($query['query'], 'select')
+        ));
     }
 
     public static function visibilityCases(): array

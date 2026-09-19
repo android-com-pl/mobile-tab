@@ -5,16 +5,19 @@ namespace Acpl\MobileTab\Tests\integration;
 use Flarum\Group\Group;
 use Flarum\Testing\integration\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class CustomTabItemsTest extends TestCase
 {
     #[Test]
-    public function guest_receives_only_custom_items_from_the_selected_variant_with_their_attributes(): void
+    #[TestWith([false])]
+    #[TestWith([true])]
+    public function guest_receives_only_custom_items_from_the_selected_variant_with_their_attributes(bool $hasNullItem): void
     {
         $this->extension('acpl-mobile-tab');
         $this->prepareDatabase([
             'mobile_tab_variants' => [
-                ['id' => 1, 'position' => 0, 'is_enabled' => true, 'items' => json_encode(['home', 'custom-1'])],
+                ['id' => 1, 'position' => 0, 'is_enabled' => true, 'items' => json_encode($hasNullItem ? ['home', null, 'custom-1'] : ['home', 'custom-1'])],
                 ['id' => 2, 'position' => 1, 'is_enabled' => true, 'items' => json_encode(['custom-2'])],
             ],
             'group_permission' => [

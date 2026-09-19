@@ -12,6 +12,7 @@ import extractText from 'flarum/common/utils/extractText';
 
 interface MobileTabVariantAttrs extends ComponentAttrs {
   variant: MobileTabVariant;
+  onSortEnd: () => void;
 }
 
 export default class MobileTabVariantSettings extends Component<MobileTabVariantAttrs> {
@@ -55,8 +56,8 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
             oncreate={(vnode) => this.createSortable(vnode.dom as HTMLElement)}
             onremove={() => this.sortable?.destroy()}
           >
-            {this.enabledItems().map((item) => (
-              <li className={`item-${item.itemName}`} key={`${variant.id()}-${item.itemName}`}>
+            {items.map((item) => (
+              <li className={`item-${item.itemName}`} key={`${variant.id()}-${item.itemName}`} data-id={item.itemName}>
                 <MobileTabItem item={item} />
               </li>
             ))}
@@ -82,24 +83,28 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
     const { default: sortableModule }: { default: typeof Sortable } = await import('flarum/admin/utils/loadSortable');
 
     this.sortable = sortableModule.create(element, {
-      group: 'mobile-tab-items',
+      group: {
+        name: 'mobile-tab-items',
+        put: (_to, _from, item) => !this.attrs.variant.items().includes(item.dataset.id!),
+      },
       animation: 120,
+      onEnd: this.attrs.onSortEnd,
 
       onAdd: (event) => {
         if (event.newIndex == null) return;
 
-        const key = this.getSortableItemKey(event);
+        const key = event.item.dataset.id;
         if (!key) return;
 
         const variant = this.attrs.variant;
         const items = [...variant.items()];
 
         if (items.includes(key)) {
-          m.redraw();
           return;
         }
 
-        items.splice(event.newIndex, 0, key);
+        const next = this.enabledItems()[event.newIndex]?.itemName;
+        items.splice(next === undefined ? items.length : items.indexOf(next), 0, key);
 
         void variant.save({ items });
       },
@@ -109,16 +114,18 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
         if (event.oldIndex === event.newIndex) return;
 
         const variant = this.attrs.variant;
-        const items = [...variant.items()];
+        const key = event.item.dataset.id;
+        if (!key) return;
 
-        const [moved] = items.splice(event.oldIndex, 1);
-        items.splice(event.newIndex, 0, moved);
+        const items = variant.items().filter((item) => item !== key);
+        const next = this.enabledItems().filter((item) => item.itemName !== key)[event.newIndex]?.itemName;
+        items.splice(next === undefined ? items.length : items.indexOf(next), 0, key);
 
         void variant.save({ items });
       },
 
       onRemove: (event) => {
-        const key = this.getSortableItemKey(event);
+        const key = event.item.dataset.id;
         if (!key) return;
 
         const variant = this.attrs.variant;
@@ -128,12 +135,6 @@ export default class MobileTabVariantSettings extends Component<MobileTabVariant
         });
       },
     });
-  }
-
-  getSortableItemKey(event: Sortable.SortableEvent) {
-    const match = Array.from(event.item.classList).find((className) => className.startsWith('item-'));
-
-    return match?.replace('item-', '');
   }
 
   deleteVariant() {

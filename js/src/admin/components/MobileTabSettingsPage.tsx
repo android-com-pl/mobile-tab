@@ -73,11 +73,15 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     return (
       <FormSection className="MobileTabAvailableItems" label={app.translator.trans('acpl-mobile-tab.admin.available_items')}>
         <p className="helpText">{app.translator.trans('acpl-mobile-tab.admin.available_items_help')}</p>
-        <ul className="MobileTabAvailableItems-list MobileTab-items" oncreate={this.createAvailableItemsSortable.bind(this)}>
+        <ul
+          className="MobileTabAvailableItems-list MobileTab-items"
+          oncreate={this.createAvailableItemsSortable.bind(this)}
+          onremove={() => this.sortableAvailableItems?.destroy()}
+        >
           {this.availableItems()
             .toArray()
             .map((item) => (
-              <li className={`item-${item.itemName}`} key={item.itemName}>
+              <li className={`item-${item.itemName}`} key={item.itemName} data-id={item.itemName}>
                 <MobileTabItem item={item} />
               </li>
             ))}
@@ -94,11 +98,11 @@ export default class MobileTabSettingsPage extends ExtensionPage {
       <FormSection className="MobileTabVariants" label={app.translator.trans('acpl-mobile-tab.admin.variants.heading')}>
         <p className="helpText">{app.translator.trans('acpl-mobile-tab.admin.variants.help')}</p>
 
-        <ul className="MobileTabVariants-list" oncreate={this.createVariantsSortable.bind(this)}>
+        <ul className="MobileTabVariants-list" oncreate={this.createVariantsSortable.bind(this)} onremove={() => this.sortableVariants?.destroy()}>
           {[...app.store.all<MobileTabVariant>('mobile-tab-variants')]
             .sort((a, b) => a.position() - b.position())
-            .map((variant, index) => (
-              <MobileTabVariantSettings key={variant.id()} variant={variant} index={index} />
+            .map((variant) => (
+              <MobileTabVariantSettings key={variant.id()} variant={variant} onSortEnd={this.refreshLists.bind(this)} />
             ))}
         </ul>
 
@@ -121,6 +125,11 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     return new MobileTabItemsRegistryAdmin().items();
   }
 
+  refreshLists() {
+    this.forcedRefreshKey++;
+    m.redraw();
+  }
+
   async createAvailableItemsSortable(vnode: VnodeDOM) {
     const { default: sortableModule }: { default: typeof Sortable } = await import('flarum/admin/utils/loadSortable');
 
@@ -132,6 +141,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
       },
       animation: 150,
       sort: false,
+      onEnd: this.refreshLists.bind(this),
     });
   }
 
@@ -142,6 +152,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
       animation: 150,
       handle: '.MobileTabVariant-handle',
       group: 'mobile-tab-variants',
+      onEnd: this.refreshLists.bind(this),
 
       onUpdate: (event) => {
         if (event.oldIndex == null || event.newIndex == null) return;

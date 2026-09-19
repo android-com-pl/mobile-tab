@@ -5,6 +5,7 @@ export interface MobileTabItemAttrs extends IButtonAttrs {
     href: string;
     target?: string;
     external?: boolean;
+    counter?: () => number;
 }
 export default class MobileTabItem extends Component<MobileTabItemAttrs> {
     view(vnode: Vnode<MobileTabItemAttrs, this>): JSX.Element;

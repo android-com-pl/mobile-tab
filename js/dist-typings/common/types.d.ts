@@ -14,7 +14,13 @@ export interface MobileTabItemDefinition {
      */
     canView?: boolean | (() => boolean);
     /**
-     * A custom component to render for this item on the forum fronted.
+     * A function returning the counter value displayed on the item.
+     *
+     * If the returned value is empty or `0`, the counter will not be displayed.
+     */
+    counter?: () => number | null | undefined;
+    /**
+     * A custom component to render for this item on the forum frontend.
      *
      * If provided, this component will be rendered instead of the default `MobileTabItem`.
      * The component will receive all other properties of the `MobileTabItemDefinition` interface (key, label, icon, href, etc.) as its `attrs.definition`.

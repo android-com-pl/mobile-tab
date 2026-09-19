@@ -1,0 +1,92 @@
+.MobileTabVariants {
+  max-width: 760px;
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.MobileTabVariant {
+  border: 1px solid var(--control-bg);
+  border-radius: var(--border-radius);
+  background: var(--body-bg-shaded);
+
+  &-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--control-bg);
+  }
+
+  &-handle {
+    flex-shrink: 0;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &-number {
+    font-weight: 600;
+    color: var(--muted-color);
+    font-size: 13px;
+  }
+
+  &-enabled {
+    .Switch {
+      margin: 0;
+    }
+  }
+
+  &-permission {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+  }
+
+  &-controlLabel {
+    color: var(--muted-color);
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  &-delete {
+    flex-shrink: 0;
+    color: var(--muted-color);
+
+    &:hover {
+      color: var(--error-color);
+    }
+  }
+
+  .MobileTabPreview {
+    box-shadow: none;
+    margin: 6px;
+    padding: 3px;
+    width: auto;
+    border-radius: var(--border-radius);
+
+    &-items {
+      position: relative;
+
+      &:empty::before {
+        content: attr(data-empty-help);
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: var(--muted-color);
+        font-size: 12px;
+      }
+    }
+  }
+}

@@ -2,7 +2,10 @@
 
 namespace Acpl\MobileTab;
 
+use Acpl\MobileTab\Access\ScopeVariantVisibility;
 use Acpl\MobileTab\Api\Resource\CustomTabItemResource;
+use Acpl\MobileTab\Api\Resource\MobileTabVariantResource;
+use Flarum\Api\Context;
 use Flarum\Api\Endpoint;
 use Flarum\Api\Resource;
 use Flarum\Api\Schema;
@@ -21,9 +24,6 @@ return [
     new Extend\Locales(__DIR__.'/locale'),
 
     (new Extend\Settings)
-        ->default(MobileTabSettings::ITEMS, ['home', 'tags', 'notifications', 'session'])
-        // This extender callback does not support container injection.
-        ->serializeToForum('acplMobileTabItems', MobileTabSettings::ITEMS, resolve(MobileTabSettings::class)->decodeItems(...))
         ->default(MobileTabSettings::HIDE_ON_SCROLL, true)
         ->serializeToForum('acplMobileTabHideOnScroll', MobileTabSettings::HIDE_ON_SCROLL, 'boolval')
         ->default(MobileTabSettings::SCROLL_THRESHOLD, 80)
@@ -35,23 +35,39 @@ return [
         }),
 
     new Extend\ApiResource(CustomTabItemResource::class),
+    new Extend\ApiResource(MobileTabVariantResource::class),
+
+    (new Extend\ModelVisibility(MobileTabVariant::class))
+        ->scope(ScopeVariantVisibility::class),
+
     (new Extend\ApiResource(Resource\ForumResource::class))
         ->fields(fn () => [
+            Schema\Arr::make('acplMobileTabItems')
+                ->get(fn (object $forum, Context $context): array => resolve(MobileTabResolver::class)
+                    ->forActor($context->getActor())
+                    ->items ?? []),
             Schema\Relationship\ToMany::make('custom-tab-items')
                 ->includable()
-                ->get(function () {
-                    // This extender callback does not support container injection.
-                    $activeItems = resolve(MobileTabSettings::class)->items();
+                ->get(function (object $forum, Context $context): array {
+                    $variant = resolve(MobileTabResolver::class)
+                        ->forActor($context->getActor());
 
-                    $customActiveItemIds = collect($activeItems)
-                        ->filter(fn ($item) => str_starts_with($item, 'custom-'))
-                        ->map(fn ($item) => str_replace('custom-', '', $item));
+                    if ($variant === null) {
+                        return [];
+                    }
+
+                    $customActiveItemIds = collect($variant->items)
+                        ->filter(fn ($item) => is_string($item) && str_starts_with($item, 'custom-'))
+                        ->map(fn (string $item) => substr($item, 7));
 
                     if ($customActiveItemIds->isEmpty()) {
                         return [];
                     }
 
-                    return CustomTabItem::query()->whereIn('id', $customActiveItemIds)->get()->all();
+                    return CustomTabItem::query()
+                        ->whereIn('id', $customActiveItemIds)
+                        ->get()
+                        ->all();
                 })
         ])
     ->endpoint(Endpoint\Show::class, function (Endpoint\Show $endpoint) {

@@ -3,21 +3,19 @@ import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/Exten
 import FormSection from 'flarum/admin/components/FormSection';
 import FormSectionGroup from 'flarum/admin/components/FormSectionGroup';
 import Button from 'flarum/common/components/Button';
-import Form from 'flarum/common/components/Form';
-import classList from 'flarum/common/utils/classList';
-import ItemList from 'flarum/common/utils/ItemList';
-import { Children, Vnode } from 'mithril';
+import Mithril, { Children, Vnode, VnodeDOM } from 'mithril';
 import type Sortable from 'sortablejs';
-import CustomTabItem from '../../common/models/CustomTabItem';
-import { MobileTabItemDefinition } from '../../common/types';
+import type CustomTabItem from '../../common/models/CustomTabItem';
 import MobileTabItemsRegistryAdmin from '../data/MobileTabItemsRegistryAdmin';
 import EditCustomTabItemModal from './EditCustomTabItemModal';
+import type MobileTabVariant from '../../common/models/MobileTabVariant';
+import MobileTabVariantSettings from './MobileTabVariantSettings';
+import MobileTabItem from './MobileTabItem';
+import ItemList from 'flarum/common/utils/ItemList';
 
 export default class MobileTabSettingsPage extends ExtensionPage {
-  protected itemsSettingKey = 'acpl-mobile-tab.items';
-  protected sortableKey = 'acpl-mobile-tab';
   protected sortableAvailableItems!: Sortable;
-  protected sortableEnabledItems!: Sortable;
+  protected sortableVariants?: Sortable;
   /**
    * Sortablejs directly manipulates the DOM, which can confuse Mithril's diffing.
    * Changing this key forces a full re-render of the list, ensuring a clean sync.
@@ -28,69 +26,51 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     super.oninit(vnode);
 
     this.loading = true;
-    app.store.find<CustomTabItem>('custom-tab-items').then(() => {
+
+    Promise.all([
+      app.store.find<MobileTabVariant>('mobile-tab-variants'), //
+      app.store.find<CustomTabItem>('custom-tab-items'),
+    ]).then(() => {
       this.loading = false;
       m.redraw();
     });
   }
 
-  get activeKeys(): string[] {
-    const raw = this.setting(this.itemsSettingKey)();
-    if (Array.isArray(raw)) return raw;
+  sections(vnode: Mithril.VnodeDOM<ExtensionPageAttrs, this>): ItemList<unknown> {
+    const items = super.sections(vnode);
 
-    try {
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
+    items.add('items', this.items(), 30);
+
+    return items;
   }
 
-  set activeKeys(value: string[]) {
-    this.setting(this.itemsSettingKey)(JSON.stringify(value));
-  }
-
-  content() {
+  items() {
     return (
-      <div className="ExtensionPage-settings MobileTabSettingsPage">
-        <div className="container" key={this.forcedRefreshKey} oncreate={this.onListCreate.bind(this)}>
+      <div className="ExtensionPage-settings">
+        <div className="container" key={this.forcedRefreshKey}>
           <FormSectionGroup>
+            {this.variantsContent()}
             {this.availableItemsContent()}
-            {this.enabledItemsContent()}
           </FormSectionGroup>
-          {this.settingsContent()}
-          <FormSectionGroup>{this.submitButton()}</FormSectionGroup>
         </div>
       </div>
-    );
-  }
-
-  settingsContent(): Children {
-    return (
-      <Form>
-        {this.buildSettingComponent({
-          type: 'boolean',
-          setting: 'acpl-mobile-tab.hide_on_scroll',
-          label: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.toggle_label'),
-        })}
-        {this.buildSettingComponent({
-          type: 'number',
-          setting: 'acpl-mobile-tab.scroll_threshold',
-          label: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.threshold_label'),
-          help: app.translator.trans('acpl-mobile-tab.admin.scroll_settings.threshold_help'),
-        })}
-      </Form>
     );
   }
 
   availableItemsContent(): Children {
     return (
       <FormSection className="MobileTabAvailableItems" label={app.translator.trans('acpl-mobile-tab.admin.available_items')}>
-        <ul className="MobileTabAvailableItems-list MobileTab-items">
+        <p className="helpText">{app.translator.trans('acpl-mobile-tab.admin.available_items_help')}</p>
+        <ul
+          className="MobileTabAvailableItems-list MobileTab-items"
+          oncreate={this.createAvailableItemsSortable.bind(this)}
+          onremove={() => this.sortableAvailableItems?.destroy()}
+        >
           {this.availableItems()
             .toArray()
             .map((item) => (
-              <li className={`item-${item.itemName}`} key={item.itemName}>
-                {this.itemContent(item)}
+              <li className={`item-${item.itemName}`} key={item.itemName} data-id={item.itemName}>
+                <MobileTabItem item={item} />
               </li>
             ))}
         </ul>
@@ -101,117 +81,88 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     );
   }
 
-  enabledItemsContent(): Children {
+  variantsContent(): Children {
     return (
-      <FormSection label={app.translator.trans('acpl-mobile-tab.admin.active_items')}>
-        <nav className="MobileTab MobileTabPreview">
-          <ul className="MobileTab-items MobileTabPreview-items">
-            {this.enabledItems()
-              .toArray()
-              .map((item) => (
-                <li className={`item-${item.itemName}`} key={item.itemName}>
-                  {this.itemContent(item)}
-                </li>
-              ))}
-          </ul>
-        </nav>
+      <FormSection className="MobileTabVariants" label={app.translator.trans('acpl-mobile-tab.admin.variants.heading')}>
+        <p className="helpText">{app.translator.trans('acpl-mobile-tab.admin.variants.help')}</p>
+
+        <ul className="MobileTabVariants-list" oncreate={this.createVariantsSortable.bind(this)} onremove={() => this.sortableVariants?.destroy()}>
+          {[...app.store.all<MobileTabVariant>('mobile-tab-variants')]
+            .sort((a, b) => a.position() - b.position())
+            .map((variant, index) => (
+              <MobileTabVariantSettings key={variant.id()} variant={variant} index={index} onSortEnd={this.refreshLists.bind(this)} />
+            ))}
+        </ul>
+
+        <Button className="Button MobileTabVariants-add" icon="fas fa-plus" onclick={this.createVariant.bind(this)}>
+          {app.translator.trans('acpl-mobile-tab.admin.variants.create')}
+        </Button>
       </FormSection>
     );
   }
 
-  itemContent(item: ReturnType<ItemList<MobileTabItemDefinition>['toArray']>[number]): Children {
-    const source = item.source ?? 'extension';
+  async createVariant() {
+    const variant = app.store.createRecord<MobileTabVariant>('mobile-tab-variants');
 
-    return (
-      <Button
-        className={classList('Button', { 'Button--dashed': source !== 'user' }, 'MobileTab-item', { 'MobileTab-item--editable': source === 'user' })}
-        icon={item.icon}
-        onclick={() => {
-          if (item.source === 'user') {
-            const id = item.itemName.match(/(\d+)$/);
-            if (!id) return;
-            app.modal.show(EditCustomTabItemModal, { model: app.store.getById('custom-tab-items', id[0]) });
-          }
-        }}
-      >
-        {item.label}
-      </Button>
-    );
+    await variant.save({});
+
+    m.redraw();
   }
 
   availableItems() {
-    const registeredItems = new MobileTabItemsRegistryAdmin().items();
-
-    this.activeKeys.forEach((key: string) => {
-      if (registeredItems.has(key)) registeredItems.remove(key);
-    });
-
-    return registeredItems;
+    return new MobileTabItemsRegistryAdmin().items();
   }
 
-  enabledItems() {
-    const registeredItems = new MobileTabItemsRegistryAdmin().items();
-    const enabledItems = new ItemList<MobileTabItemDefinition>();
-
-    this.activeKeys.forEach((key: string) => {
-      if (registeredItems.has(key)) {
-        enabledItems.add(key, registeredItems.get(key));
-      }
-    });
-
-    return enabledItems;
+  refreshLists() {
+    this.forcedRefreshKey++;
+    m.redraw();
   }
 
-  getSortableItemKey(event: Sortable.SortableEvent) {
-    const element = event.item;
-    const match = Array.from(element.classList).find((className) => className.startsWith('item-'));
-    if (!match) return;
-    return match.replace('item-', '');
-  }
-
-  async onListCreate() {
+  async createAvailableItemsSortable(vnode: VnodeDOM) {
     const { default: sortableModule }: { default: typeof Sortable } = await import('flarum/admin/utils/loadSortable');
 
-    this.sortableAvailableItems = sortableModule.create(this.element.querySelector('.MobileTabAvailableItems-list')!, {
-      group: this.sortableKey,
+    this.sortableAvailableItems = sortableModule.create(vnode.dom as HTMLElement, {
+      group: {
+        name: 'mobile-tab-items',
+        pull: 'clone',
+        put: true,
+      },
       animation: 150,
       sort: false,
+      onEnd: this.refreshLists.bind(this),
     });
+  }
 
-    this.sortableEnabledItems = sortableModule.create(this.element.querySelector('.MobileTabPreview-items')!, {
-      group: this.sortableKey,
-      animation: 120,
-      onAdd: (event) => {
-        if (event.newIndex == null) return;
+  async createVariantsSortable(vnode: VnodeDOM) {
+    const { default: sortableModule }: { default: typeof Sortable } = await import('flarum/admin/utils/loadSortable');
 
-        const key = this.getSortableItemKey(event);
-        if (!key) return;
+    this.sortableVariants = sortableModule.create(vnode.dom as HTMLElement, {
+      animation: 150,
+      handle: '.MobileTabVariant-handle',
+      draggable: '.MobileTabVariant',
+      onEnd: this.refreshLists.bind(this),
 
-        const activeKeys = [...this.activeKeys];
-        activeKeys.splice(event.newIndex, 0, key);
-
-        this.activeKeys = activeKeys;
-        this.forcedRefreshKey++;
-        m.redraw();
-      },
-      onSort: (event) => {
+      onUpdate: (event) => {
         if (event.oldIndex == null || event.newIndex == null) return;
         if (event.oldIndex === event.newIndex) return;
-        if (event.from !== event.to) return;
 
-        const current = [...this.activeKeys];
+        const variants = [...app.store.all<MobileTabVariant>('mobile-tab-variants')].sort((a, b) => a.position() - b.position());
 
-        const [moved] = current.splice(event.oldIndex, 1);
-        current.splice(event.newIndex, 0, moved);
+        const [moved] = variants.splice(event.oldIndex, 1);
+        variants.splice(event.newIndex, 0, moved);
 
-        this.activeKeys = current;
-        m.redraw();
-      },
-      onRemove: (event) => {
-        const key = this.getSortableItemKey(event);
-        const activeKeys = [...this.activeKeys];
-        this.activeKeys = activeKeys.filter((item) => item !== key);
-        this.forcedRefreshKey++;
+        variants.forEach((variant, position) => {
+          variant.pushAttributes({ position });
+        });
+
+        void app.request({
+          method: 'POST',
+          url: `${app.forum.attribute('apiUrl')}/mobile-tab-variants/order`,
+          body: {
+            order: variants.map((variant) => variant.id()),
+          },
+        });
+
         m.redraw();
       },
     });

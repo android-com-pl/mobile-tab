@@ -4,7 +4,8 @@
 
 A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 
-![Imgur](https://i.imgur.com/QGrWQyP.png)
+<img width="1280" height="640" alt="mobile-tab" src="https://github.com/user-attachments/assets/a4794750-2a48-4d13-848c-216c5a8ec638" />
+
 
 ## Installation
 

@@ -125,7 +125,7 @@ export default class MobileTabSettingsPage extends ExtensionPage {
       group: {
         name: 'mobile-tab-items',
         pull: 'clone',
-        put: true,
+        put: ['mobile-tab-items'],
       },
       animation: 150,
       sort: false,
@@ -137,6 +137,11 @@ export default class MobileTabSettingsPage extends ExtensionPage {
     const { default: sortableModule }: { default: typeof Sortable } = await import('flarum/admin/utils/loadSortable');
 
     this.sortableVariants = sortableModule.create(vnode.dom as HTMLElement, {
+      group: {
+        name: 'mobile-tab-variants',
+        pull: false,
+        put: false,
+      },
       animation: 150,
       handle: '.MobileTabVariant-handle',
       draggable: '.MobileTabVariant',

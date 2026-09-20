@@ -39,7 +39,7 @@ Read: [https://docs.flarum.org/2.x/extend/extending-extensions](https://docs.fla
 
 ### Example
 
-Create `extendMobileTab.ts` in your extension's `js/common` directory:
+Create `extendMobileTab.ts` in your extension's `js/src/common` directory:
 
 ```tsx
 import MobileTabItemsRegistry from "ext:acpl/mobile-tab/common/MobileTabItemsRegistry";
@@ -68,7 +68,9 @@ export default () => {
 };
 ```
 
-Use this file in both admin and forum. Example for the admin side:
+The `following` route, translation keys, and `myCount` forum attribute are examples: replace them with values provided by your extension. Keep forum route lookups inside callbacks so they are not evaluated in the admin panel.
+
+Use this file in both admin and forum. Example for `js/src/admin/index.ts`:
 
 ```tsx
 import app from "flarum/admin/app";
@@ -83,8 +85,9 @@ app.initializers.add("my-ext/mobile-tab-example", () => {
 To make an item interactive on the forum, assign a component using the `forumComponent` property.
 
 > [!NOTE]  
-> Interactive components should be registered in `MobileTabItemsRegistryForum` because they import `from flarum/forum/*`.
-> Registering them in the common registry would break the admin panel.
+> Register components that import `flarum/forum/*` in `MobileTabItemsRegistryForum`, from your forum entry point. Importing them in shared code would break the admin panel because forum modules are unavailable there.
+
+In `js/src/forum/index.ts`:
 
 ```tsx
 import MobileTabItemsRegistryForum from "ext:acpl/mobile-tab/forum/data/MobileTabItemsRegistryForum";
@@ -109,6 +112,8 @@ app.initializers.add("my-ext/mobile-tab-example", () => {
 });
 ```
 
+Create `js/src/forum/components/MyCustomTabItem.tsx`:
+
 ```tsx
 import MobileTabComponent from "ext:acpl/mobile-tab/common/components/MobileTabComponent";
 import Button from "flarum/common/components/Button";
@@ -129,6 +134,19 @@ export default class MyCustomTabItem extends MobileTabComponent {
   }
 }
 ```
+
+After enabling your extension, drag the registered items from **Available items** into the desired mobile tab variants in the admin panel. Registration alone does not add items to a visible tab. Keep item IDs stable because variants store those IDs.
+
+### Item behavior
+
+See [`MobileTabItemDefinition`](js/src/common/types.ts) for the available properties.
+
+- `canView` controls whether an item is rendered on the forum and defaults to `true`. It does not replace server-side permission checks.
+- `href` accepts a URL or a callback returning one. Links are internal by default; use `isInternal: false` for external URLs and `isNewTab: true` to open them in a new tab.
+- `counter` returns a number to display on the default item. Zero, `null`, and `undefined` hide the counter.
+- `forumComponent` replaces the default item renderer and receives the definition through `this.attrs.definition`. Your component handles its own click behavior, navigation, and counter display; `canView` is still checked before rendering it.
+
+To modify an existing item, use `items.setContent(id, { ...items.get(id), ...changes })`; to remove one, use `items.remove(id)`. Check `items.has(id)` first when the item belongs to an optional extension. Changes in the common registry affect both the admin panel and forum; use the forum registry for forum-only behavior.
 
 ## Links
 

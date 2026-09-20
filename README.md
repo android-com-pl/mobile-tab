@@ -39,7 +39,7 @@ Read: [https://docs.flarum.org/2.x/extend/extending-extensions](https://docs.fla
 
 ### Example
 
-Create `extendMobile.ts` in your extension's `js/common` directory:
+Create `extendMobileTab.ts` in your extension's `js/common` directory:
 
 ```tsx
 import MobileTabItemsRegistry from "ext:acpl/mobile-tab/common/MobileTabItemsRegistry";

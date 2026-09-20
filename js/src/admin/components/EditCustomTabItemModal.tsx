@@ -29,12 +29,12 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
     this.label = Stream(this.customTabItem?.label() || '');
     this.icon = Stream(this.customTabItem?.icon() || '');
     this.url = Stream(this.customTabItem?.url() || '');
-    this.isInternal = Stream(this.customTabItem?.isInternal() || true);
+    this.isInternal = Stream(this.customTabItem?.isInternal() ?? true);
     this.isNewTab = Stream(this.customTabItem?.isNewTab() || false);
   }
 
   className() {
-    return 'EditCustomTabItemModal Modal--small';
+    return 'EditCustomTabItemModal';
   }
 
   title() {
@@ -60,6 +60,16 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
     const items = new ItemList<Children>();
 
     items.add(
+      'help',
+      <p className="helpText">
+        {app.translator.trans('acpl-mobile-tab.admin.edit_item.help', {
+          a: <a href="https://github.com/android-com-pl/mobile-tab/blob/2.x/README.md#extending" target="_blank" rel="noopener noreferrer" />,
+        })}
+      </p>,
+      100
+    );
+
+    items.add(
       'label',
       <FormGroup
         type="text"
@@ -83,20 +93,41 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
     );
 
     items.add(
+      'linkType',
+      <FormGroup
+        type="select"
+        label={app.translator.trans('acpl-mobile-tab.admin.edit_item.type.heading')}
+        help={app.translator.trans(`acpl-mobile-tab.admin.edit_item.type.${this.isInternal() ? 'internal' : 'external'}.help`)}
+        options={{
+          internal: app.translator.trans('acpl-mobile-tab.admin.edit_item.type.internal.label'),
+          external: app.translator.trans('acpl-mobile-tab.admin.edit_item.type.external.label'),
+        }}
+        default="internal"
+        value={this.isInternal() ? 'internal' : 'external'}
+        onchange={(value: string) => this.isInternal(value === 'internal')}
+      />
+    );
+
+    items.add(
       'url',
       <FormGroup
         type={this.isInternal() ? 'text' : 'url'}
         label={app.translator.trans(`acpl-mobile-tab.admin.edit_item.${this.isInternal() ? 'path' : 'url'}`)}
+        help={app.translator.trans(`acpl-mobile-tab.admin.edit_item.url_help.${this.isInternal() ? 'internal' : 'external'}`, {
+          baseUrl: <code>{app.forum.attribute('baseUrl')}</code>,
+        })}
         placeholder={this.isInternal() ? '/example-path' : 'https://example.com'}
         stream={this.url}
         required
       />
     );
 
-    items.add('checkboxes', [
-      <FormGroup type="boolean" label={app.translator.trans('acpl-mobile-tab.admin.edit_item.is_internal_checkbox')} stream={this.isInternal} />,
-      <FormGroup type="boolean" label={app.translator.trans('acpl-mobile-tab.admin.edit_item.open_new_tab_checkbox')} stream={this.isNewTab} />,
-    ]);
+    if (!this.isInternal()) {
+      items.add(
+        'openNewTab',
+        <FormGroup type="boolean" label={app.translator.trans('acpl-mobile-tab.admin.edit_item.open_new_tab_checkbox')} stream={this.isNewTab} />
+      );
+    }
 
     items.add(
       'actions',
@@ -116,7 +147,13 @@ export default class EditCustomTabItemModal extends FormModal<EditCustomTabItemM
   }
 
   submitData() {
-    return { label: this.label(), url: this.url(), icon: this.icon(), isInternal: this.isInternal(), isNewTab: this.isNewTab() };
+    return {
+      label: this.label(),
+      url: this.url(),
+      icon: this.icon(),
+      isInternal: this.isInternal(),
+      isNewTab: !this.isInternal() && this.isNewTab(),
+    };
   }
 
   onsubmit(e: SubmitEvent) {

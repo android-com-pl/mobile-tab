@@ -7,6 +7,10 @@ use Illuminate\Database\Schema\Builder;
 
 return [
     'up' => function (Builder $schema) {
+        if ($schema->hasTable('mobile_tab_variants')) {
+            return;
+        }
+
         $schema->create('mobile_tab_variants', function (Blueprint $table) {
             $table->increments('id');
             $table->json('items');

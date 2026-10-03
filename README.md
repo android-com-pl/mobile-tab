@@ -6,7 +6,6 @@ A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
 
 <img width="1280" height="640" alt="mobile-tab" src="https://github.com/user-attachments/assets/a4794750-2a48-4d13-848c-216c5a8ec638" />
 
-
 ## Installation
 
 Install with composer:
@@ -54,7 +53,7 @@ export default () => {
       label: app.translator.trans("my-ext.forum.index.following_label"),
       href: () => app.route("following"),
       canView: () => !!app.session.user,
-      counter: () => app.forum.attribute('myCount'),
+      counter: () => app.forum.attribute("myCount"),
       source: "extension",
     });
 

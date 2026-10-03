@@ -1,8 +1,8 @@
-# Mobile Tab Component
+# Mobile Tab for Flarum
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab) [![Total Downloads](https://img.shields.io/packagist/dt/acpl/mobile-tab.svg)](https://packagist.org/packages/acpl/mobile-tab/stats) [![GitHub Sponsors](https://img.shields.io/badge/Donate-%E2%9D%A4-%23db61a2.svg?&logo=github&logoColor=white&labelColor=181717)](https://github.com/android-com-pl/mobile-tab?sponsor=1)
 
-A [Flarum](https://flarum.org) extension. Adds a bottom tab on mobile.
+A bottom navigation bar that keeps key forum pages and actions within easy reach on mobile.
 
 <img width="1280" height="640" alt="mobile-tab" src="https://github.com/user-attachments/assets/a4794750-2a48-4d13-848c-216c5a8ec638" />
 

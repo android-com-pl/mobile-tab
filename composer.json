@@ -1,5 +1,6 @@
 {
     "name": "acpl/mobile-tab",
+    "description": "Bottom navigation for Flarum with custom links and layouts for different user groups.",
     "type": "flarum-extension",
     "scripts": {
         "analyse:phpstan": "phpstan analyse",
@@ -9,7 +10,12 @@
         "test:setup": "@php tests/integration/setup.php"
     },
     "keywords": [
-        "flarum"
+        "flarum",
+        "flarum-extension",
+        "mobile",
+        "navigation",
+        "mobile-navigation",
+        "bottom-navigation"
     ],
     "license": "MIT",
     "support": {
